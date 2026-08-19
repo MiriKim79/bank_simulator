@@ -3,7 +3,6 @@ window.Quiz = (function () {
   var DATA = null;
   var index = 0;
   var answered = false;
-  var origin = 'intro';   // 퀴즈를 끝내고 돌아갈 화면
 
   fetch('../mission/quiz-data.json')
     .then(function (r) { return r.json(); })
@@ -25,7 +24,7 @@ window.Quiz = (function () {
     if (!btn) return;
     btn.hidden = false;
     btn.addEventListener('click', function () {
-      start('done');
+      start();
     });
   }
 
@@ -33,9 +32,8 @@ window.Quiz = (function () {
 
   function questions() { return (DATA && DATA.questions) ? DATA.questions : []; }
 
-  function start(from) {
+  function start() {
     if (!DATA) return;
-    origin = from || 'intro';
     index = 0;
     answered = false;
     if (window.BankUI && window.BankUI.showStep) window.BankUI.showStep('quiz');
@@ -71,7 +69,7 @@ window.Quiz = (function () {
     nav.hidden = true;
     var isLast = (index === list.length - 1);
     nav.appendChild(navButton('next', isLast ? '결과 보기' : '다음 문제 풀기', true));
-    nav.appendChild(navButton('restart', '처음 문제로 돌아가기', false));
+    nav.appendChild(navButton('exit', '처음 화면으로', false));
     root.appendChild(nav);
 
     answered = false;
@@ -90,8 +88,8 @@ window.Quiz = (function () {
     root.appendChild(card);
 
     var nav = el('div', 'quiz-nav');
-    nav.appendChild(navButton('restart', '처음 문제로 돌아가기', true));
-    nav.appendChild(navButton('exit', '퀴즈 끝내기', false));
+    nav.appendChild(navButton('exit', '처음 화면으로', true));
+    nav.appendChild(navButton('restart', '다시 풀기', false));
     root.appendChild(nav);
   }
 
@@ -161,8 +159,9 @@ window.Quiz = (function () {
     render();
   }
 
+  // 버튼 문구가 '처음 화면으로' 이므로 어디서 들어왔든 intro 로 나간다.
   function exit() {
-    if (window.BankUI && window.BankUI.showStep) window.BankUI.showStep(origin);
+    if (window.BankUI && window.BankUI.showStep) window.BankUI.showStep('intro');
   }
 
   // 퀴즈 화면 안쪽 클릭만 받는다. data-action 이 없으므로 미션 상태머신에는 가지 않는다.
