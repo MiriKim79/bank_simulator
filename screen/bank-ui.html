@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>금융한걸음 — 송금 연습</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="shell">
+<main id="phone">
+
+  <p id="progress" hidden></p>
+
+  <section class="screen is-active" id="screen-home">
+    <h1>내 계좌</h1>
+    <p class="mission-title">오늘의 미션 — 김민수에게 50,000원 보내기</p>
+    <p class="label-sm">출금계좌</p>
+    <p class="account-no">한걸음은행 123456-78-901234</p>
+    <p class="balance">잔액 <strong>1,250,000</strong> 원</p>
+    <button data-action="transfer" class="primary">이체<small>돈 보내기</small></button>
+    <button data-action="history">거래내역<small>들어오고 나간 기록</small></button>
+    <button data-action="balance">잔액조회<small>남은 돈 보기</small></button>
+  </section>
+  <section class="screen" id="screen-bank">
+    <h1>어느 은행으로 보내나요?</h1>
+    <p class="hint">받는 사람: 김민수</p>
+    <button data-action="pick-bank" data-value="한걸음은행">한걸음은행</button>
+    <button data-action="pick-bank" data-value="새봄은행">새봄은행</button>
+    <button data-action="pick-bank" data-value="푸른은행">푸른은행</button>
+  </section>
+
+  <section class="screen" id="screen-account">
+    <h1>계좌번호를 넣으세요</h1>
+    <p class="hint">수취인: 김민수 (한걸음은행)</p>
+    <input id="input-account" type="text" inputmode="numeric" placeholder="숫자만 입력">
+    <div class="keypad" data-target="input-account">
+      <button type="button" data-key="1">1</button>
+      <button type="button" data-key="2">2</button>
+      <button type="button" data-key="3">3</button>
+      <button type="button" data-key="4">4</button>
+      <button type="button" data-key="5">5</button>
+      <button type="button" data-key="6">6</button>
+      <button type="button" data-key="7">7</button>
+      <button type="button" data-key="8">8</button>
+      <button type="button" data-key="9">9</button>
+      <button type="button" data-key="clear">전체지움</button>
+      <button type="button" data-key="0">0</button>
+      <button type="button" data-key="back">← 지움</button>
+    </div>
+    <button data-action="submit-account" class="primary">다음</button>
+  </section>
+
+  <section class="screen" id="screen-amount">
+    <h1>얼마를 보내나요?</h1>
+    <p class="hint">수취인: 김민수</p>
+    <input id="input-amount" type="text" inputmode="numeric" placeholder="숫자만 입력">
+    <div class="keypad" data-target="input-amount">
+      <button type="button" data-key="1">1</button>
+      <button type="button" data-key="2">2</button>
+      <button type="button" data-key="3">3</button>
+      <button type="button" data-key="4">4</button>
+      <button type="button" data-key="5">5</button>
+      <button type="button" data-key="6">6</button>
+      <button type="button" data-key="7">7</button>
+      <button type="button" data-key="8">8</button>
+      <button type="button" data-key="9">9</button>
+      <button type="button" data-key="clear">전체지움</button>
+      <button type="button" data-key="0">0</button>
+      <button type="button" data-key="back">← 지움</button>
+    </div>
+    <button data-action="submit-amount" class="primary">다음</button>
+  </section>
+
+  <section class="screen" id="screen-confirm">
+    <h1>이대로 보낼까요?</h1>
+    <p class="hint">출금계좌: 한걸음은행 123456-78-901234<br>
+      수취인: 김민수<br>
+      계좌번호: 한걸음은행 11022233344<br>
+      <strong>50,000 원</strong></p>
+    <button data-action="confirm" class="primary">보내기</button>
+  </section>
+
+  <section class="screen" id="screen-done">
+    <h1>보냈습니다</h1>
+    <p class="hint">김민수님에게 <strong>50,000 원</strong>을 보냈습니다.</p>
+    <p class="hint">연습이라 실제 돈은 움직이지 않았습니다.</p>
+    <button data-action="restart" class="primary">다시 연습하기</button>
+    <button id="quiz-start" hidden>용어 복습하기</button>
+  </section>
+  <section class="screen" id="screen-quiz"></section>
+
+  <div id="help-bar">
+    <button id="mic-button" hidden>🎤 말로 물어보기</button>
+    <button id="help-ask">물어보기</button>
+    <button id="help-repeat">다시 설명해주세요</button>
+  </div>
+
+  <div id="question-box" hidden>
+    <input id="question-text" type="text" placeholder="궁금한 것을 적어 주세요">
+    <button id="question-send">보내기</button>
+  </div>
+
+  <p id="ai-answer"></p>
+</main>
+</div>
+
+<script>
+window.BankUI = (function () {
+  var SCREENS = ['home', 'bank', 'account', 'amount', 'confirm', 'done', 'quiz'];
+
+  // F17 진행 표시. 문구는 missions.json 의 label 에서 온다 — 여기에 단계 이름을 적지 않는다.
+  function updateProgress(name) {
+    var el = document.getElementById('progress');
+    if (!el) return;
+    var m = (window.MissionEngine && window.MissionEngine.getMission)
+      ? window.MissionEngine.getMission() : null;
+    var steps = (m && Array.isArray(m.steps)) ? m.steps : [];
+    var labeled = steps.filter(function (s) { return s.label; });
+    var idx = -1;
+    labeled.forEach(function (s, i) { if (s.step === name) idx = i; });
+    if (idx === -1) {              // home(label 없음)·quiz(미션 아님)
+      el.textContent = '';
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    el.textContent = (idx + 1) + ' / ' + labeled.length + ' 단계 — ' + labeled[idx].label;
+  }
+
+  function showStep(name) {
+    if (SCREENS.indexOf(name) === -1) {
+      console.warn('[BankUI] 모르는 화면:', name);
+      return;
+    }
+    SCREENS.forEach(function (s) {
+      var el = document.getElementById('screen-' + s);
+      if (el) el.classList.toggle('is-active', s === name);
+    });
+    updateProgress(name);
+  }
+
+  function showAnswer(text) {
+    var box = document.getElementById('ai-answer');
+    if (box) box.textContent = text || '';
+  }
+
+  function showError(message, selector) {
+    showAnswer(message);
+    var target = selector ? document.querySelector(selector) : null;
+    if (!target) return;
+    target.classList.remove('shake');
+    void target.offsetWidth;   // 리플로우 강제 → 연속 오답에도 매번 흔들린다
+    target.classList.add('shake');
+  }
+
+  return { showStep: showStep, showAnswer: showAnswer, showError: showError };
+})();
+
+// data-action 을 가진 것만 상태머신에 넘긴다.
+// 도움바·질문칸·퀴즈 버튼은 data-action 이 없으므로 여기 안 걸린다.
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  if (!window.MissionEngine) return;   // 파일이 아직 없어도 페이지가 죽지 않게
+
+  var action = el.getAttribute('data-action');
+  var value = el.getAttribute('data-value');
+
+  // 입력칸이 있는 단계는 버튼의 data-value 대신 입력칸 값을 쓴다.
+  if (action === 'submit-account') {
+    value = document.getElementById('input-account').value;
+  } else if (action === 'submit-amount') {
+    value = document.getElementById('input-amount').value;
+  }
+
+  var r = window.MissionEngine.submit({ action: action, value: value });
+
+  if (r.ok) {
+    window.BankUI.showAnswer('');
+    if (action === 'restart') {
+      document.getElementById('input-account').value = '';
+      document.getElementById('input-amount').value = '';
+    }
+  } else {
+    window.BankUI.showError(r.message, '#screen-' + r.step);
+  }
+
+  window.BankUI.showStep(r.step);
+});
+
+document.addEventListener('click', function (e) {
+  var key = e.target.closest('[data-key]');
+  if (!key) return;
+  var pad = key.closest('.keypad');
+  if (!pad) return;
+
+  var input = document.getElementById(pad.getAttribute('data-target'));
+  if (!input) return;
+
+  var k = key.getAttribute('data-key');
+  if (k === 'clear') input.value = '';
+  else if (k === 'back') input.value = input.value.slice(0, -1);
+  else input.value = input.value + k;
+});
+</script>
+
+<script src="../shared/llm-config.js"></script>
+<script src="../mission/mission-engine.js"></script>
+<script src="../guide/voice.js"></script>
+<script src="../guide/ai-guide.js"></script>
+<script src="../mission/quiz.js"></script>
+</body>
+</html>
