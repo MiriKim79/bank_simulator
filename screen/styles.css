@@ -167,3 +167,11 @@ input {
 .keypad button { margin: 0; min-height: 68px; font-size: 28px; }
 .keypad button[data-key="clear"],
 .keypad button[data-key="back"] { font-size: 17px; }
+
+button small {
+  display: block;
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: normal;
+  opacity: 0.8;
+}
