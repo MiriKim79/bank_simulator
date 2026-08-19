@@ -1,4 +1,4 @@
-# guide/ — 답변·음성 담당 (레인 C · 담당 `[미정]`)
+# guide/ — 답변·음성 담당 (레인 C · 담당 미리)
 
 > 이 파일은 **C 담당자만** 고친다.
 > `guide/` 안의 파일을 Claude가 읽을 때 **자동으로 함께 읽힌다.**
@@ -18,7 +18,7 @@
 - **`askAI` 는 절대 reject 하지 않는다.** 어떤 실패든 안에서 삼키고 한국어 문장을 돌려준다 (SPEC 6.1 기준 3)
 - 인자는 **3개**다: `askAI(question, currentStep, mission)`. 2개로 줄이지 않는다
 - **단계 설명을 이 폴더에 다시 적지 않는다.** 미리 쓴 답변에 없으면 `mission` 인자(= `missions.json`)에서 만든다. 여기에 적으면 미션 내용이 두 곳에 생겨 F6이 깨진다
-- 답변은 **화면 텍스트로만** 낸다. `speechSynthesis` 를 부르지 않는다 (F11 Won't)
+- 답변은 **화면 텍스트로만** 낸다. `speechSynthesis` 를 부르지 않는다 — F11(TTS)은 Should로 확정됐지만(SPEC 12.1) Must 레인 완료 전까지는 착수하지 않는다. Should 단계에서 만들 때도 담당은 C(미리)
 - LLM은 기본 미연결이다. `window.LLM_CONFIG` 가 없으면 아예 시도하지 않고, 있으면 `AbortController` 로 5초에 끊는다
 - **API 키를 이 폴더에 쓰지 않는다.** 키는 `shared/llm-config.js`(커밋 안 함)에만 둔다
 - 도움바는 **`ai-guide.js` 안에서 스스로 배선한다.** `screen/bank-ui.html` 을 열지 않는다

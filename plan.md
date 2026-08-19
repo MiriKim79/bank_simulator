@@ -12,7 +12,7 @@
 
 **UI/UX 레퍼런스:** 신한 SOL뱅크 「돈 보내기」 체험(`SPEC.md` 13절). 흐름·정보 구조·입력 방식·버튼 배치를 참고하되 **로고·브랜드명·색·아이콘은 복제하지 않는다.** 가상 은행이다. SOL과 다른 곳은 SPEC 13.3에 반영/단순화/제외/팀결정으로 분류해 뒀다 — **이 계획은 그 분류를 넘어서 기능을 더하지 않는다.**
 
-**3차 수정으로 이 계획에 반영된 것:** `askAI` 인자 3개(`question, currentStep, mission`) · `MissionEngine.getMission()` 신설 · `missions.json` 의 `label` 과 F17 진행 표시 · 미션은 송금 1개 · F16 오답은 설명 후 다음. **팀 결정 대기 2건(SPEC 12절)** 은 아래 제약에 표시했다.
+**3차 수정으로 이 계획에 반영된 것:** `askAI` 인자 3개(`question, currentStep, mission`) · `MissionEngine.getMission()` 신설 · `missions.json` 의 `label` 과 F17 진행 표시 · 미션은 송금 1개 · F16 오답은 설명 후 다음. **팀 결정 대기 5건(SPEC 12절)은 2026-08-19에 전부 확정됐다** — F11 Should 상향, F16 오답 처리 확정, 은행명 `한걸음은행` 확정, 비밀번호 단계 제외 확정, 목표 금액 홈 1회 표시 확정. 아래 제약에 확정값을 반영했다.
 
 ---
 
@@ -24,16 +24,15 @@ SPEC에서 그대로 가져온 프로젝트 전역 제약. 모든 Task의 요구
 - **플랫폼은 웹.** 네이티브 앱 아님 (SPEC 5.1)
 - **모든 데이터는 가짜.** 실제 금융 데이터·실제 개인정보 미사용 (SPEC 5.1)
 - **AI는 사용자를 대신해 버튼을 누르지 않는다.** 설명·안내·피드백만 한다 (SPEC 1)
-- **AI 답변은 화면 텍스트로만 출력한다.** `speechSynthesis` 를 쓰지 않는다 — F11 Won't (SPEC 4.1)
-  - **결정 대기:** F11을 Should로 올릴지 팀 논의 중이다(SPEC 12.1). **올라가기 전까지는 쓰지 않는다.** 올라가면 담당은 C이고, `.claude/agents/code-reviewer.md` 검토 항목 4번도 같이 고쳐야 한다
-- **MVP에 음성은 없다.** F12(마이크)가 Should라 Must 경로의 질문 수단은 텍스트 입력뿐이다 (SPEC 7)
-- **Won't 기능을 만들지 않는다:** F9(반복 오답 힌트 상승), F10(단계별 안내 배너), F11(음성 낭독) (SPEC 4.2)
+- **AI 답변은 Must 레인에서 화면 텍스트로만 출력한다.** `speechSynthesis` 를 Must 단계에서 쓰지 않는다 — F11은 **Should로 확정**됐다(SPEC 12.1). Should 착수 시 담당은 C(미리)이고, `.claude/agents/code-reviewer.md` 검토 항목 4번도 같이 고친다. **Must 레인(S0~S2) 완료 전까지는 착수하지 않는다**
+- **MVP(Must)에 음성은 없다.** F12(마이크)·F11(TTS) 모두 Should라 Must 경로의 질문 수단은 텍스트 입력뿐이다 (SPEC 7)
+- **Won't 기능을 만들지 않는다:** F9(반복 오답 힌트 상승), F10(단계별 안내 배너) (SPEC 4.2)
 - **미션 내용은 `missions.json` 에만 있다.** 단계·정답·오답 문구·단계 이름(`label`)을 JS에 하드코딩하지 않는다 — F6 Must (SPEC 4.1)
   - **AI 답변 경로도 이 파일을 본다.** `askAI(question, currentStep, mission)` 의 세 번째 인자로 미션 객체를 받는다. 단계 설명을 `ai-guide.js` 안에 따로 적으면 미션 내용이 두 곳에 생겨 F6이 반쪽이 된다 (SPEC 8)
 - **미션은 송금 1개다.** 미션 목록·선택 화면을 만들지 않는다. `missions.json` 은 객체 하나이고 배열로 감싸지 않는다 (SPEC 4.3)
 - **진행 표시(F17)는 위치만 말한다.** `2 / 5 단계 — 계좌번호 입력`. "무엇을 하세요"라고 지시하면 F10(Won't)이 된다 (SPEC 4.1 F17)
-- **한 폴더에 한 사람.** `screen/`(A) · `mission/`(B) · `guide/`(C) · `shared/`(통합자). 자기 폴더 밖은 **읽기만** 한다 (`OWNERS.md`)
-  - 담당·통합자는 아직 미정이다. 정해지면 `OWNERS.md` 의 「담당이 정해지면 할 일」 3단계(deny·확인·훅)를 각자 실행한다
+- **한 폴더에 한 사람.** `screen/`(A=영원) · `mission/`(B=서정) · `guide/`(C=미리) · `shared/`(통합자=미리). 자기 폴더 밖은 **읽기만** 한다 (`OWNERS.md`)
+  - 담당·통합자는 확정됐다. 각자 `OWNERS.md` 의 「담당이 정해지면 할 일」 3단계(deny·확인·훅)를 실행한다
 - **상대 경로 기준은 열려 있는 페이지(`screen/`)다.** 다른 폴더의 파일은 `../mission/...` `../guide/...` 로 부른다. `fetch('missions.json')` 은 404 다
 - **`file://` 로 열지 않는다.** 항상 `http://localhost:8000` (SPEC 5.2)
 - **API 키를 저장소에 커밋하지 않는다** (SPEC 5.2). LLM 경로는 `[확인 필요]` Q3이므로 C2는 LLM 미연결을 기본값으로 만든다
@@ -192,10 +191,10 @@ _workspace/
 ```json
 {
   "id": "transfer-kimminsu-50000",
-  "title": "김민수에게 5만원 보내기",
+  "title": "김민수에게 50,000원 보내기",
   "steps": [
     { "step": "home",    "action": "transfer",       "next": "bank",    "label": "",           "wrong": "" },
-    { "step": "bank",    "action": "pick-bank",      "value": "국민은행", "next": "account", "label": "은행 선택",     "wrong": "" },
+    { "step": "bank",    "action": "pick-bank",      "value": "한걸음은행", "next": "account", "label": "은행 선택",     "wrong": "" },
     { "step": "account", "action": "submit-account", "value": "11022233344", "next": "amount", "label": "계좌번호 입력", "wrong": "" },
     { "step": "amount",  "action": "submit-amount",  "value": "50000",  "next": "confirm", "label": "금액 입력",     "wrong": "" },
     { "step": "confirm", "action": "confirm",        "next": "done",    "label": "확인",         "wrong": "" },
@@ -258,7 +257,7 @@ styles.css 만 같은 폴더라 그대로 쓴다.
   - `transfer`  — 홈의 이체 버튼
   - `history`   — 홈의 거래내역 버튼 (미션 정답 아님)
   - `balance`   — 홈의 잔액조회 버튼 (미션 정답 아님)
-  - `pick-bank` + `data-value="국민은행"` — 은행 선택
+  - `pick-bank` + `data-value="한걸음은행"` — 은행 선택
   - `submit-account` — 계좌번호 확인
   - `submit-amount`  — 금액 확인
   - `confirm`   — 최종 보내기
@@ -432,7 +431,7 @@ git commit -m "chore(s0): 인터페이스 계약, missions.json, 스텁 3개"
 git push
 ```
 
-`develop` 에 바로 올린다. `main` 은 통합자가 `develop` 을 머지해서만 올린다. 자세한 규칙은 `ZIP-PROTOCOL.md` 의 「Git 협업 규칙」.
+**S0은 셋이 같이 만드는 계약이라 예외적으로 `develop` 에 바로 올린다.** S0 이후 A·B·C 각자의 Task는 자기 `feature/*` 브랜치(`feature/screen-ui`·`feature/mission-engine`·`feature/ai-guide`)에서 커밋하고 `develop` 대상 PR로 합친다. `main` 은 통합자가 `develop` 을 머지해서만 올린다. 자세한 규칙은 `ZIP-PROTOCOL.md` 의 「Git 협업 규칙」.
 
 > **게이트**: 세 사람이 `CONTRACT.md` 를 읽고 자기가 만들 함수 이름을 말로 다시 말할 수 있다. `missions.json` 의 `action` 값에 셋이 동의했다. `localhost:8000` 이 뜬다.
 > **여기서 세 사람이 갈라진다. S1까지 서로 부르지 않는다.**
@@ -703,15 +702,16 @@ git commit -m "feat(a1): 화면 7개 껍데기, BankUI, F17 진행 표시, scrip
 
 `출금계좌` 라는 말을 화면에 넣는다. F16 퀴즈가 이 용어를 묻는데, SPEC 6.2 기준 10이 **"송금 6단계에서 실제로 화면에 등장한 용어만"** 묻도록 요구한다. 화면에 없으면 퀴즈에서 뺄 수밖에 없다.
 
-> ⚠ **팀 결정 대기 두 개가 이 화면에 걸린다** (임의로 바꾸지 말 것)
-> - **SPEC 12.3 은행명**: 아래 `국민은행` 은 실존 브랜드명이다. 가상 은행명으로 갈지 정해지면 이 줄과 `missions.json`·`qa-data.json` 을 **같이** 고친다
-> - **SPEC 12.5 목표 금액 표시**: (나)안으로 정해지면 이 화면에 미션 제목(`missions.json` 의 `title`) 한 줄을 띄운다. 정해지기 전에는 넣지 않는다
+> ✅ **확정 두 건이 이 화면에 반영됐다** (SPEC 12절, 2026-08-19)
+> - **SPEC 12.3 은행명**: 가상 은행 `한걸음은행`으로 확정. 아래 값과 `missions.json`·`qa-data.json` 이 이미 이 값으로 맞춰져 있다
+> - **SPEC 12.5 목표 금액 표시**: (나)안 확정. 이 화면에 미션 제목(`missions.json` 의 `title`) 한 줄을 띄운다. 각 단계 화면에는 반복하지 않는다
 
 ```html
   <section class="screen is-active" id="screen-home">
     <h1>내 계좌</h1>
+    <p class="mission-title">오늘의 미션 — 김민수에게 50,000원 보내기</p>
     <p class="label-sm">출금계좌</p>
-    <p class="account-no">국민은행 123456-78-901234</p>
+    <p class="account-no">한걸음은행 123456-78-901234</p>
     <p class="balance">잔액 <strong>1,250,000</strong> 원</p>
     <button data-action="transfer" class="primary">이체</button>
     <button data-action="history">거래내역</button>
@@ -722,6 +722,7 @@ git commit -m "feat(a1): 화면 7개 껍데기, BankUI, F17 진행 표시, scrip
 - [ ] **Step 2: `styles.css` 맨 아래에 추가**
 
 ```css
+.mission-title { margin: 0 0 12px; font-size: 16px; font-weight: bold; }
 .label-sm { margin: 0; font-size: 16px; color: var(--accent); font-weight: bold; }
 .account-no { margin: 0; color: var(--fg); opacity: 0.7; font-size: 18px; }
 .balance { margin: 4px 0 24px; font-size: 24px; }
@@ -731,7 +732,7 @@ git commit -m "feat(a1): 화면 7개 껍데기, BankUI, F17 진행 표시, scrip
 - [ ] **Step 3: 눈 확인**
 
 새로고침.
-기대: `출금계좌` → `국민은행 123456-78-901234` → `잔액 1,250,000 원` 순으로 보이고, 이체(파란색)·거래내역·잔액조회 버튼 3개가 큼직하게 있다. 스텁 엔진이라 아무 버튼이나 눌러도 다음 화면으로 간다 — 정상이다.
+기대: `오늘의 미션 — 김민수에게 50,000원 보내기` → `출금계좌` → `한걸음은행 123456-78-901234` → `잔액 1,250,000 원` 순으로 보이고, 이체(파란색)·거래내역·잔액조회 버튼 3개가 큼직하게 있다. 스텁 엔진이라 아무 버튼이나 눌러도 다음 화면으로 간다 — 정상이다.
 
 - [ ] **Step 4: 커밋**
 
@@ -752,7 +753,7 @@ F4와 F15는 10절에서 한 항목으로 묶였다. 한 Task로 만든다.
 
 계좌번호 `11022233344` 와 금액 `50000` 은 **`missions.json` 의 `value` 와 반드시 같아야 한다.** S0에서 확정한 값이다.
 
-> ⚠ **SPEC 12.3 (은행명) 팀 결정 대기.** 아래 은행 버튼 세 개 `국민은행`·`신한은행`·`농협은행` 은 실존 브랜드명이고, `신한은행` 은 레퍼런스로 삼은 그 은행이다. 가상 은행명으로 바꾸기로 하면 `data-value` 와 `missions.json` 의 `value` 를 같이 고친다. **혼자 바꾸지 않는다** — 공통 약속이다.
+> ✅ **SPEC 12.3 확정.** 아래 은행 버튼 세 개는 가상 은행명 `한걸음은행`(정답)·`새봄은행`·`푸른은행`이다. `data-value` 와 `missions.json` 의 `value` 가 이미 이 값으로 맞춰져 있다.
 
 SOL 실제 화면과 대조한 결과(SPEC 13.2·13.3):
 
@@ -765,14 +766,14 @@ SOL 실제 화면과 대조한 결과(SPEC 13.2·13.3):
   <section class="screen" id="screen-bank">
     <h1>어느 은행으로 보내나요?</h1>
     <p class="hint">받는 사람: 김민수</p>
-    <button data-action="pick-bank" data-value="국민은행">국민은행</button>
-    <button data-action="pick-bank" data-value="신한은행">신한은행</button>
-    <button data-action="pick-bank" data-value="농협은행">농협은행</button>
+    <button data-action="pick-bank" data-value="한걸음은행">한걸음은행</button>
+    <button data-action="pick-bank" data-value="새봄은행">새봄은행</button>
+    <button data-action="pick-bank" data-value="푸른은행">푸른은행</button>
   </section>
 
   <section class="screen" id="screen-account">
     <h1>계좌번호를 넣으세요</h1>
-    <p class="hint">수취인: 김민수 (국민은행)</p>
+    <p class="hint">수취인: 김민수 (한걸음은행)</p>
     <input id="input-account" type="text" inputmode="numeric" placeholder="숫자만 입력">
     <button data-action="submit-account" class="primary">다음</button>
   </section>
@@ -786,9 +787,9 @@ SOL 실제 화면과 대조한 결과(SPEC 13.2·13.3):
 
   <section class="screen" id="screen-confirm">
     <h1>이대로 보낼까요?</h1>
-    <p class="hint">출금계좌: 국민은행 123456-78-901234<br>
+    <p class="hint">출금계좌: 한걸음은행 123456-78-901234<br>
       수취인: 김민수<br>
-      계좌번호: 국민은행 11022233344<br>
+      계좌번호: 한걸음은행 11022233344<br>
       <strong>50,000 원</strong></p>
     <button data-action="confirm" class="primary">보내기</button>
   </section>
@@ -943,14 +944,14 @@ document.addEventListener('click', function (e) {
 
 - [ ] **Step 4: 눈 확인 — 스텁으로 완주되는가**
 
-새로고침 후 마우스로 이체 → 국민은행 → (계좌번호 입력) 다음 → (금액 입력) 다음 → 보내기 → 다시 연습하기.
+새로고침 후 마우스로 이체 → 한걸음은행 → (계좌번호 입력) 다음 → (금액 입력) 다음 → 보내기 → 다시 연습하기.
 기대: 완료 화면까지 갔다가 홈으로 돌아오고, 두 입력칸이 비어 있다.
 
 스텁 엔진이라 아무 값이나 넣어도 통과한다. 정답 판정은 B가 만든다. **A가 확인할 것은 화면 전환과 입력칸 초기화다.**
 
 - [ ] **Step 5: 눈 확인 — 도움바가 어느 화면에서나 보이는가**
 
-이체 → 국민은행 → 계좌번호로 넘어가면서 매번 확인한다.
+이체 → 한걸음은행 → 계좌번호로 넘어가면서 매번 확인한다.
 기대: `물어보기`·`다시 설명해주세요` 두 버튼이 화면이 바뀌어도 구분선 아래 같은 자리에 계속 있다. 마이크 버튼은 안 보인다. 한 화면에서라도 사라지면 실패다.
 
 - [ ] **Step 6: 눈 확인 — 스텁 배선이 도는가**
@@ -1067,7 +1068,7 @@ S0에서 셋이 만든 `missions.json` 의 빈 `wrong` 을 채운다. F8의 "왜
 
 `label` 은 S0에서 셋이 정한 값을 **그대로 유지한다.** 지우면 A의 F17 진행 표시가 빈칸이 된다.
 
-> ⚠ **SPEC 12.3 (은행명) 팀 결정 대기.** `bank` 단계의 `value: "국민은행"` 은 실존 브랜드명이다. 가상 은행명으로 바꾸기로 하면 **A의 `data-value` 와 C의 답변 문구까지 같이** 바뀐다. 혼자 바꾸지 않는다.
+> ✅ **SPEC 12.3 확정.** `bank` 단계의 `value` 는 가상 은행명 `"한걸음은행"` 이다. A의 `data-value` 와 C의 답변 문구도 이 값으로 맞춰져 있다.
 
 ```json
 {
@@ -1079,8 +1080,8 @@ S0에서 셋이 만든 `missions.json` 의 빈 `wrong` 을 채운다. F8의 "왜
       "wrong": "그 버튼은 돈을 보내는 버튼이 아닙니다. 돈을 보내려면 맨 위 파란 \"이체\" 버튼을 누르세요."
     },
     {
-      "step": "bank", "action": "pick-bank", "value": "국민은행", "next": "account", "label": "은행 선택",
-      "wrong": "받는 사람 김민수님의 은행이 아닙니다. 김민수님 계좌는 국민은행이므로 \"국민은행\"을 누르세요."
+      "step": "bank", "action": "pick-bank", "value": "한걸음은행", "next": "account", "label": "은행 선택",
+      "wrong": "받는 사람 김민수님의 은행이 아닙니다. 김민수님 계좌는 한걸음은행이므로 \"한걸음은행\"을 누르세요."
     },
     {
       "step": "account", "action": "submit-account", "value": "11022233344", "next": "amount", "label": "계좌번호 입력",
@@ -1229,7 +1230,7 @@ MissionEngine.getMission().steps.map(s => s.step + ':' + (s.label || '(없음)')
 MissionEngine.reset();
 [
   {action:'transfer'},
-  {action:'pick-bank', value:'국민은행'},
+  {action:'pick-bank', value:'한걸음은행'},
   {action:'submit-account', value:'11022233344'},
   {action:'submit-amount', value:'50,000'},
   {action:'confirm'},
@@ -1263,7 +1264,7 @@ console.log('단계는?', MissionEngine.getStep());
 ```js
 MissionEngine.reset();
 MissionEngine.submit({action:'transfer'});
-MissionEngine.submit({action:'pick-bank', value:'국민은행'});
+MissionEngine.submit({action:'pick-bank', value:'한걸음은행'});
 console.log(JSON.stringify(MissionEngine.submit({action:'submit-account', value:'99999'})));
 console.log('단계는?', MissionEngine.getStep());
 ```
@@ -1298,7 +1299,7 @@ F6이 Must인 이유를 실제로 확인하는 Task다. SPEC 6.1 기준 6이 "�
 ```js
 MissionEngine.reset();
 MissionEngine.submit({action:'transfer'});
-MissionEngine.submit({action:'pick-bank', value:'국민은행'});
+MissionEngine.submit({action:'pick-bank', value:'한걸음은행'});
 MissionEngine.submit({action:'submit-account', value:'11022233344'});
 console.log('5만원:', JSON.stringify(MissionEngine.submit({action:'submit-amount', value:'50000'})));
 console.log('3만원:', JSON.stringify(MissionEngine.submit({action:'submit-amount', value:'30000'})));
@@ -1364,12 +1365,12 @@ A·B를 기다리지 않는다.
     "home": [
       { "keywords": ["이체", "보내", "송금", "돈"], "answer": "돈을 보내는 것을 \"이체\"라고 합니다. 맨 위 파란 버튼 \"이체\"를 누르세요." },
       { "keywords": ["잔액", "얼마", "남았", "통장"], "answer": "지금 통장에 남은 돈은 1,250,000원입니다. 화면 위쪽 \"잔액\"에 적혀 있습니다." },
-      { "keywords": ["출금계좌", "내 통장", "어느 통장"], "answer": "돈이 빠져나가는 내 통장을 \"출금계좌\"라고 합니다. 화면 맨 위에 있는 국민은행 123456-78-901234 입니다." },
+      { "keywords": ["출금계좌", "내 통장", "어느 통장"], "answer": "돈이 빠져나가는 내 통장을 \"출금계좌\"라고 합니다. 화면 맨 위에 있는 한걸음은행 123456-78-901234 입니다." },
       { "keywords": ["무엇", "뭐", "어떻게", "모르"], "answer": "지금은 첫 화면입니다. 돈을 보내려면 맨 위 파란 \"이체\" 버튼을 누르세요." }
     ],
     "bank": [
-      { "keywords": ["은행", "어디", "어느", "모르"], "answer": "받는 사람 김민수님의 계좌는 국민은행입니다. \"국민은행\"을 누르세요." },
-      { "keywords": ["무엇", "뭐", "어떻게"], "answer": "돈을 받을 사람의 은행을 고르는 화면입니다. \"국민은행\"을 누르세요." }
+      { "keywords": ["은행", "어디", "어느", "모르"], "answer": "받는 사람 김민수님의 계좌는 한걸음은행입니다. \"한걸음은행\"을 누르세요." },
+      { "keywords": ["무엇", "뭐", "어떻게"], "answer": "돈을 받을 사람의 은행을 고르는 화면입니다. \"한걸음은행\"을 누르세요." }
     ],
     "account": [
       { "keywords": ["계좌", "번호", "몇", "모르"], "answer": "받는 계좌번호는 11022233344 입니다. 숫자만 넣고 \"다음\"을 누르세요." },
@@ -1691,7 +1692,7 @@ git commit -m "feat(c2): F13 askAI 폴백 인터페이스 (LLM → 미리 쓴 �
 기대: 노란 박스에 "생각 중입니다..." 가 잠깐 떴다가 홈 단계 답변으로 바뀐다.
 
 이체를 눌러 은행 선택 화면으로 간 뒤 다시 누른다.
-기대: 이번엔 국민은행을 누르라는 답변이 나온다. **단계에 따라 답이 달라져야 한다.**
+기대: 이번엔 한걸음은행을 누르라는 답변이 나온다. **단계에 따라 답이 달라져야 한다.**
 
 - [ ] **Step 3: 눈 확인 — 텍스트 질문 왕복 (SPEC 6.1 기준 2)**
 
@@ -1738,7 +1739,7 @@ grep -l '\[스텁\]' mission/*.js guide/*.js
 새로고침 후 손으로 순서대로.
 
 1. 이체 → 은행 선택
-2. 국민은행 → 계좌번호
+2. 한걸음은행 → 계좌번호
 3. `11022233344` → 다음 → 금액
 4. `50000` → 다음 → 확인
 5. 보내기 → 완료
@@ -1747,7 +1748,7 @@ grep -l '\[스텁\]' mission/*.js guide/*.js
 - [ ] **Step 3: 눈 확인 — 오답 3종**
 
 - 홈에서 "거래내역": 화면 그대로 + 흔들림 + B1 문구
-- 은행에서 "신한은행": 화면 그대로 + 흔들림 + 국민은행 안내
+- 은행에서 "새봄은행": 화면 그대로 + 흔들림 + 한걸음은행 안내
 - 금액에 `30000` → 다음: 금액 화면 그대로 + 5만원 안내. 그 뒤 `50000` 으로 고치면 통과
 
 - [ ] **Step 3-b: 눈 확인 — F17 진행 표시가 실제 데이터에서 오는가**
@@ -2202,7 +2203,7 @@ window.Quiz = (function () {
 
 `#quiz-start` 는 `data-action` 이 없으므로 A4의 상태머신 리스너에 걸리지 않는다. 퀴즈는 미션 단계가 아니다.
 
-오답을 골랐을 때 다시 고를 기회를 주지 않는다. 대신 **정답이 무엇이었는지와 쉬운 설명을 같이** 보여준다. SPEC 4.1 F16의 확정값이다. 이 값은 **SPEC 12.2 팀 결정 대기** 항목이므로, 팀이 "다시 선택"으로 뒤집으면 `answer()` 의 버튼 잠금만 고친다 — 화면·데이터는 그대로다.
+오답을 골랐을 때 다시 고를 기회를 주지 않는다. 대신 **정답이 무엇이었는지와 쉬운 설명을 같이** 보여준다. SPEC 4.1·12.2에서 확정된 값이다. 나중에 팀이 "다시 선택"으로 뒤집으면 `answer()` 의 버튼 잠금만 고친다 — 화면·데이터는 그대로다.
 
 - [ ] **Step 2: 눈 확인 — 진입 버튼이 나타나는가**
 
@@ -2408,7 +2409,7 @@ SPEC 9절 항목 중 안 정해진 것을 발표 질문 대비용으로 적는�
 | 13절 단순화 S1~S5 | — | A3(은행·계좌 두 화면, 취소 없음), A1(F17 분모 5) — 의도된 차이로 기록만 |
 | 13절 제외 X1~X8 | — | 없음 — 만들지 않는다(아래 「안 다루는 SPEC 항목」) |
 | 13.4 SOL에 오답 화면이 없다 | — | **A5** — F8은 레퍼런스에 베낄 대상이 없어 우리가 설계한다 |
-| 12.3~12.5 팀 결정 | — | A2·A3·B1 에 ⚠ 로 표시. **정해지기 전에는 지금 값 그대로 만든다** |
+| 12.1~12.5 팀 결정 5건 확정(2026-08-19) | — | A2·A3·B1 에 ✅ 로 표시. F11 Should·F16 오답 처리·은행명·비밀번호 제외·목표 표시 전부 반영됨 |
 
 ### 이 계획이 안 다루는 SPEC 항목
 
@@ -2419,6 +2420,9 @@ SPEC 9절 항목 중 안 정해진 것을 발표 질문 대비용으로 적는�
 - **Q7 배포 방식** — 로컬 `localhost` 만 전제. 공개 URL이 필요하면 별도 Task.
 - **Q8·Q9 사용성 테스트 인원·심사 기준** — S2 Step 1을 "외부인 1명"으로 잠정 정했다. 팀이 다르게 정하면 그 Step만 고친다.
 - **Q11 보호자 동반 시나리오** — 미고려. 사용자 혼자 쓰는 전제.
-- **F16 오답 재시도 여부 — SPEC 12.2 팀 결정 대기.** SPEC의 현재 확정값 "설명 후 다음 문제"로 구현한다(B5 Step 1). 팀이 "다시 선택"으로 뒤집으면 `answer()` 의 버튼 잠금 하나만 고친다. B 담당.
+- **F16 오답 재시도 여부 — SPEC 12.2 확정: 설명 후 다음 문제.** B5 Step 1대로 구현한다. 다시 고를 기회를 주지 않는다. B(서정) 담당.
 - **SOL 에는 있고 우리는 안 만드는 것** (SPEC 13.3 X1~X8): 송금 후 **메모 입력**, **다음 미션으로 이어가기**(미션이 1개다), **수수료 표시**, 가이드 사이트 껍데기, **금액 칩(`5만` 한 번 누르면 정답이 된다)**, **이체 후 잔액 감소·거래내역 쌓기**(저장 없음이 전제), **거래내역상세**, **빨간 점으로 다음 누를 곳 찍어 주기**(그게 F10 Won't 의 정체다). 넣자는 이야기가 나오면 3명·1일 범위부터 다시 본다.
-- **F11 음성 낭독(TTS) 등급 — SPEC 12.1 팀 결정 대기.** 지금은 Won't이므로 이 계획에 Task가 없고 `speechSynthesis` 를 쓰지 않는다. Should로 올라가면 C의 답변 출력 경로(`showAnswer` 호출 지점)에 붙이는 30줄짜리 Task가 하나 생기고, `.claude/agents/code-reviewer.md` 검토 항목 4번도 같이 고쳐야 한다.
+- **F11 음성 낭독(TTS) — SPEC 12.1 확정: Should로 상향.** 이 계획에는 아직 세부 Task가 없다 — Must 레인(S0~S2) 완료 후, C(미리) 담당으로 답변 출력 경로(`showAnswer` 호출 지점)에 붙이는 Task를 그때 추가한다. 착수 전까지는 `speechSynthesis` 를 쓰지 않는다. 착수 시 `.claude/agents/code-reviewer.md` 검토 항목 4번도 같이 고쳐야 한다.
+- **비밀번호 6자리 단계 — SPEC 12.4 확정: 이번 MVP 제외.** 이 계획의 흐름(`bank`→`account`→`amount`→`confirm`→`done`)에 인증 단계를 넣지 않는다.
+- **은행명 — SPEC 12.3 확정: 가상 은행 `한걸음은행`(정답)·`새봄은행`·`푸른은행`(오답 선택지).** A2·A3·B1·C1의 은행명이 전부 이 값으로 맞춰져 있다.
+- **목표 금액 표시 — SPEC 12.5 확정: 홈 화면에 한 번만.** `missions.json` 의 `title` 을 A2에서 "오늘의 미션 — 김민수에게 50,000원 보내기"로 띄운다. 각 단계 화면에는 반복하지 않는다(F10과 구분).

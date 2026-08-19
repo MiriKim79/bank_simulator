@@ -12,20 +12,20 @@
 
 | 항목 | 값 |
 |---|---|
-| 브랜치 | `develop`(작업·통합) · `main`(배포) — 두 개만 쓴다 |
-| 작업 방식 | **`develop` 에서 바로 커밋·푸시한다.** feature 브랜치를 따지 않는다 |
+| 브랜치 | `feature/*`(기능 개발, 담당자별) → `develop`(통합·검증) → `main`(배포) |
+| 작업 방식 | **각자 자기 `feature/*` 브랜치에서 커밋하고, PR을 `develop` 대상으로 연다.** `main`·`develop` 직접 커밋은 원칙적으로 금지 — 공통 계약(`shared/CONTRACT.md`) 변경처럼 셋이 같이 고쳐야 하는 경우만 합의 후 예외로 `develop`에 바로 커밋한다 |
 | `main` | `develop` 을 **머지해서만** 올라간다. 직접 커밋하지 않는다 |
 | 커밋 | `feat(a1): ...` 처럼 레인·Task 번호를 앞에 붙인다. `plan.md` 각 Task 의 커밋 메시지를 그대로 쓴다 |
 | 올리기 전 | **반드시 `git pull` 먼저.** 셋이 같은 브랜치에 올리므로 남의 커밋 위에 얹어야 한다 |
 | 남의 폴더 | 자기 폴더 밖 파일이 diff 에 있으면 안 된다 (`.claude/agents/code-reviewer.md` 검토 항목 3). 커밋 전에 `git status` 로 확인 |
 | 검증 | `OWNERS.md` 의 검증 3단계를 통과한 것만 푸시한다 — **깨진 `develop` 은 세 사람을 동시에 막는다** |
 
-**`develop` 을 공유하므로 리뷰가 자동으로 걸리지 않는다.** 대신 두 가지로 대신한다.
+**feature 브랜치 → `develop` PR 이 기본 흐름이다.** 테스트 러너가 없으니 리뷰를 대신할 두 가지를 지킨다.
 
-1. **커밋 전에 `git pull`.** 안 하면 push 가 거부되고, 억지로 밀면 남의 작업이 날아간다
-2. **푸시 전에 검증 3단계.** PR 리뷰가 없으니 깨진 것을 잡아 줄 사람이 없다. 자기가 본다
+1. **PR 올리기 전에 `develop` 을 내 `feature/*` 에 `merge`(또는 `rebase`).** 오래된 브랜치로 PR을 열면 충돌이 늦게 발견된다
+2. **PR 병합 전에 검증 3단계.** `OWNERS.md` 의 검증 3단계를 통과한 것만 `develop`에 머지한다
 
-`.github/pull_request_template.md` 와 이슈 템플릿은 원격에 이미 있다. PR 을 쓰지 않기로 했으므로 지금은 안 쓰지만, 큰 변경을 팀에 보여 주고 싶을 때는 PR 을 열어도 된다.
+`.github/pull_request_template.md` 와 이슈 템플릿은 원격에 이미 있다. `feature/* → develop` PR에 그대로 쓴다.
 
 `.claude/` 는 **커밋한다**(팀 하네스 공유). 단 `.claude/settings.local.json` 은 `.gitignore` 에 있다 — 권한 규칙은 사람마다 다르다.
 
