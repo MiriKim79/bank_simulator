@@ -117,7 +117,11 @@ window.BankUI = (function () {
 
   function showError(message, selector) {
     showAnswer(message);
-    // 흔들림은 A5(F8)에서 채운다.
+    var target = selector ? document.querySelector(selector) : null;
+    if (!target) return;
+    target.classList.remove('shake');
+    void target.offsetWidth;   // 리플로우 강제 → 연속 오답에도 매번 흔들린다
+    target.classList.add('shake');
   }
 
   return { showStep: showStep, showAnswer: showAnswer, showError: showError };

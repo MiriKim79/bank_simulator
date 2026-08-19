@@ -118,3 +118,16 @@ input {
 #question-box[hidden] { display: none; }
 #question-box input { min-height: 56px; font-size: 20px; }
 #question-box button { margin: 0; width: auto; padding: 0 20px; min-height: 56px; font-size: 18px; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+.shake { animation: shake 0.4s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .shake { animation: none; }
+}
