@@ -2,9 +2,10 @@
 
 이 파일을 고치려면 세 사람이 같이 고친다. 혼자 바꾸면 다른 두 명 코드가 깨진다.
 
-## 1. 화면 이름 7개 (그중 미션 단계는 6개)
+## 1. 화면 이름 8개 (그중 미션 단계는 6개)
 
 미션 단계:  home → bank → account → amount → confirm → done
+미션 아님:  intro  (첫 화면. 미션 안내만 보여주고 "송금 연습 시작"을 누르면 home 으로 간다. data-goto 로 전환하며 MissionEngine 을 부르지 않는다)
 미션 아님:  quiz   (F16, Should. 완료 화면에서 들어가고 완료 화면으로 돌아온다)
 
 문자열 그대로 쓴다. 대문자·한글·별칭 금지.
@@ -34,7 +35,7 @@ styles.css 만 같은 폴더라 그대로 쓴다.
 ## 3. DOM 규칙 (A가 지킨다)
 
 - 화면 하나 = `<section class="screen" id="screen-{화면이름}">`
-  `#screen-home` `#screen-bank` `#screen-account` `#screen-amount` `#screen-confirm` `#screen-done` `#screen-quiz`
+  `#screen-intro` `#screen-home` `#screen-bank` `#screen-account` `#screen-amount` `#screen-confirm` `#screen-done` `#screen-quiz`
 - 현재 화면만 `is-active` 클래스를 가진다. 나머지는 CSS로 숨는다.
 - 미션 입력은 전부 `data-action` 을 가진다. 값이 필요하면 `data-value` 도 가진다.
   `data-action` 값은 missions.json 의 action 과 **정확히 같아야 한다.**
