@@ -220,6 +220,7 @@ input {
   padding-top: 16px;
   border-top: 2px solid var(--line);
 }
+#help-bar[hidden] { display: none; }   /* flex 라서 hidden 속성만으로는 안 사라진다 */
 #help-bar button { margin: 0; font-size: 17px; min-height: 56px; }
 #help-bar button[hidden] { display: none; }
 
@@ -284,3 +285,67 @@ button small {
   font-weight: normal;
   opacity: 0.8;
 }
+
+/* 용어 사전(#screen-glossary) — 묶음을 눌러 펼치는 목록. 색은 위 :root 값만 쓴다. */
+.glossary-group {
+  margin: 0 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+.glossary-group > summary {
+  padding: 18px 16px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  background: var(--info-bg);
+  color: var(--info-fg);
+}
+.glossary-group > summary::-webkit-details-marker { display: none; }
+.glossary-group > summary::after {
+  content: "▼";
+  float: right;
+  font-size: 16px;
+  opacity: 0.7;
+}
+.glossary-group[open] > summary::after { content: "▲"; }
+.glossary-group > summary small {
+  font-size: 16px;
+  font-weight: normal;
+  opacity: 0.8;
+}
+.glossary-icon { margin-right: 8px; }
+
+.term {
+  padding: 16px;
+  border-top: 1px solid var(--line);
+}
+.term h3 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+.term h3 small {
+  font-size: 16px;
+  font-weight: normal;
+  opacity: 0.75;
+}
+.term-desc { margin: 0 0 10px; font-size: 19px; }
+.term-like {
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--page);
+  border-radius: 12px;
+  font-size: 18px;
+}
+.term-like-tag {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+#glossary-to-quiz { margin-top: 20px; }

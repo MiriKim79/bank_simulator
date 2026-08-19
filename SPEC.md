@@ -803,7 +803,7 @@ SOL의 입력 단계는 **3개**(받는통장 / 보내는통장·금액 / 확인
 | U3 | 진행 표시 분모를 5에서 4로, `done`은 진행칸에서 뺀다 | 반영. **13.3 S3를 뒤집는다** — SOL과 같은 쪽(입력 단계만 셈)으로 갔다. `missions.json`은 안 건드리고 화면 쪽 계산만 바꿨다(위 S3 갱신 참고) |
 | U4 | 인트로 화면에만 앱 이름·부제(`#app-title`·`#app-subtitle`)를 보여주고 나머지 화면은 숨긴다("한 화면 = 한 행동") | 반영. 안전 문구(`#app-safety`)는 SOL도 모든 화면에 고정으로 두므로(13.2 공통 껍데기) 그대로 모든 화면에 유지 — U4는 브랜드 반복만 줄인 것이지 안전 메시지를 줄인 게 아니다 |
 | U5 | 진행 표시를 알약(pill) 배지 스타일로 | 반영. CSS만 바뀜 |
-| U6 | 인트로 화면에 "금융 용어 퀴즈" 진입 버튼 추가 | **버튼만 반영.** `#quiz-start-intro`, hidden 상태로 뒀다 — `mission/quiz.js`(F16, Should, 아직 없음)가 만들어지면 그때 `#quiz-start`(완료 화면)와 같이 노출·배선한다. `shared/CONTRACT.md` 3절 DOM 목록에 새 id 추가 |
+| U6 | 인트로 화면에 "금융 용어 퀴즈" 진입 버튼 추가 | **다르게, 더 크게 반영됐다.** 처음엔 `#quiz-start-intro`(hidden 버튼 하나)로 반영했는데, 같은 시간에 다른 브랜치(`feature/finquiz-lingo`)에서 사용자가 직접 지시한 **"쉬운 금융 용어 사전"(`#screen-glossary`) 화면 전체 + O·X 퀴즈 10문제**(`mission/quiz.js`)가 통째로 만들어져 병합됐다. 화면 이름이 8개→**9개**(`glossary` 추가)로 바뀌었다. 병합하면서 내 `#quiz-start-intro`는 지우고 이미 동작하는 `data-goto="glossary"` 버튼으로 정리했다. `shared/CONTRACT.md`·`OWNERS.md` 갱신 완료 |
 
 #### 단순화
 

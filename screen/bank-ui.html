@@ -28,7 +28,7 @@
     <h1>오늘의 미션</h1>
     <p id="intro-mission" class="mission-banner"></p>
     <button data-goto="home" class="primary">송금 연습 시작</button>
-    <button id="quiz-start-intro" hidden><span class="btn-icon">📚</span>금융 용어 퀴즈</button>
+    <button data-goto="glossary"><span class="btn-icon">📖</span>금융 용어 퀴즈<small>쉬운 말 사전부터 보기</small></button>
   </section>
 
   <section class="screen" id="screen-home">
@@ -111,6 +111,134 @@
     <button data-action="restart" class="primary"><span class="btn-icon">🔄</span>다시 연습하기</button>
     <button id="quiz-start" hidden><span class="btn-icon">📚</span>용어 복습하기</button>
   </section>
+  <section class="screen" id="screen-glossary">
+    <h1>쉬운 금융 용어 사전</h1>
+    <p class="hint">궁금한 내용을 누르면 관련 용어와 설명이 펼쳐집니다.</p>
+
+    <details class="glossary-group">
+      <summary><span class="glossary-icon">🔑</span>로그인과 비밀번호</summary>
+      <article class="term">
+        <h3>앱 비밀번호 <small>간편비밀번호</small></h3>
+        <p class="term-desc">은행 앱을 켜고 들어갈 때(로그인) 누르는 6자리 숫자입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>우리 집 대문 열쇠와 같습니다. 대문을 열어야 집 안으로 들어갈 수 있는 것처럼, 앱을 켜고 들어가기 위해 가장 먼저 사용하는 열쇠입니다.</p>
+      </article>
+      <article class="term">
+        <h3>계좌 비밀번호</h3>
+        <p class="term-desc">내 통장에서 다른 사람에게 돈을 보내거나 창구에서 돈을 뽑을 때 누르는 4자리 숫자입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>통장에 찍는 실물 도장과 같습니다. 통장에서 돈이 빠져나갈 때 진짜 내 의도가 맞는지 최종 확인하는 도장입니다.</p>
+      </article>
+      <article class="term">
+        <h3>생체 인증 <small>지문 · 얼굴 인식</small></h3>
+        <p class="term-desc">스마트폰 화면에 손가락을 대거나 얼굴을 비추어 본인임을 확인하는 기능입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>내 몸에 찍힌 도장입니다. 복잡한 비밀번호를 일일이 기억해서 누를 필요 없이 지문이나 얼굴로 손쉽게 문을 열 수 있습니다.</p>
+      </article>
+      <article class="term">
+        <h3>아이디와 비밀번호</h3>
+        <p class="term-desc">영문 문자와 숫자를 조합해서 나만의 이름을 만들고 들어가던 예전 로그인 방식입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>옛날 명찰과 같습니다. 요즘은 입력하기 귀찮고 복잡해서 숫자 6자리나 지문 인증으로 대부분 바뀌었습니다.</p>
+      </article>
+    </details>
+
+    <details class="glossary-group">
+      <summary><span class="glossary-icon">🪪</span>인증서 <small>모바일 신분증</small></summary>
+      <article class="term">
+        <h3>은행 간편인증서</h3>
+        <p class="term-desc">내가 자주 쓰는 은행에서 발급해 주는 가장 쉽고 빠른 모바일 신분증입니다. 30초 만에 만들 수 있고 유효기간도 3년으로 깁니다. 6자리 비밀번호나 지문으로 바로 쓸 수 있어 가장 편리합니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>단골 은행의 VIP 회원증입니다.</p>
+      </article>
+      <article class="term">
+        <h3>금융인증서</h3>
+        <p class="term-desc">금융결제원이라는 국가 기관에서 만들어 모든 은행이 함께 쓰는 안전한 신분증입니다. 휴대폰을 새 걸로 바꿔도 복잡하게 파일을 옮길 필요 없이, 이름과 전화번호만 치면 인터넷 구름 금고(클라우드)에서 바로 불러와 쓸 수 있습니다. 유효기간은 3년입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>인터넷 금고에 보관해 둔 모바일 신분증입니다.</p>
+      </article>
+      <article class="term">
+        <h3>공동인증서 <small>옛 공인인증서</small></h3>
+        <p class="term-desc">예전에 쓰던 공인인증서의 새 이름입니다. 영문, 숫자, 특수문자를 조합한 10자리 이상의 아주 복잡한 비밀번호를 써야 하고, 매년 갱신해야 해서 어르신들이 사용하기에 가장 어렵고 번거롭습니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>매년 도장을 다시 찍어야 하는 종이 신분증입니다.</p>
+      </article>
+    </details>
+
+    <details class="glossary-group">
+      <summary><span class="glossary-icon">💸</span>송금과 계좌 관리</summary>
+      <article class="term">
+        <h3>계좌번호</h3>
+        <p class="term-desc">돈을 주고받기 위해 내 통장마다 하나씩 부여된 고유한 번호입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>우리 집 주소입니다. 우편물을 받으려면 집 주소가 필요하듯, 돈을 받으려면 계좌번호가 있어야 합니다.</p>
+      </article>
+      <article class="term">
+        <h3>예금주</h3>
+        <p class="term-desc">해당 통장을 소유하고 있는 진짜 주인의 이름입니다. 돈을 보내기 전, 받는 사람 이름이 맞는지 꼭 확인해야 합니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>집주인의 이름입니다.</p>
+      </article>
+      <article class="term">
+        <h3>이체 <small>송금</small></h3>
+        <p class="term-desc">내 통장에 들어있는 돈을 다른 사람의 통장으로 전자적으로 보내는 작업입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>인터넷으로 돈 배달하기입니다.</p>
+      </article>
+      <article class="term">
+        <h3>잔액 <small>잔고</small></h3>
+        <p class="term-desc">돈을 보내거나 뺀 뒤에 현재 내 통장에 진짜로 남아있는 금액입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>통장에 남아있는 진짜 내 돈입니다.</p>
+      </article>
+      <article class="term">
+        <h3>이체 한도</h3>
+        <p class="term-desc">사기 피해나 실수를 막기 위해 하루에, 또는 한 번에 앱으로 보낼 수 있는 돈의 최대 금액을 제한해 둔 것입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>하루 동안 돈을 보낼 수 있는 안전 울타리입니다.</p>
+      </article>
+    </details>
+
+    <details class="glossary-group">
+      <summary><span class="glossary-icon">🛡️</span>보안과 안전장치</summary>
+      <article class="term">
+        <h3>보안카드</h3>
+        <p class="term-desc">은행에서 발급받은 빽빽한 숫자가 적힌 비닐 카드입니다. 큰돈을 보낼 때 앱에서 지정하는 위치의 숫자 두 자리를 찾아서 입력해야 합니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>실물 암호표입니다.</p>
+      </article>
+      <article class="term">
+        <h3>OTP <small>오티피</small></h3>
+        <p class="term-desc">버튼을 누를 때마다 화면에 새로운 6자리 숫자가 떠오르는 작은 열쇠고리 기기 또는 모바일 기능입니다. 큰돈을 보낼 때 본인 확인용으로 사용합니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>매번 번호가 바뀌는 자동 자물쇠입니다.</p>
+      </article>
+      <article class="term">
+        <h3>보이스피싱 <small>스미싱</small></h3>
+        <p class="term-desc">전화나 문자로 검찰, 은행, 또는 자녀를 사칭하여 돈을 빼앗아가거나 신분증 사진을 요구하는 대표적인 금융 사기 수법입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>가짜 전화 및 문자 사기입니다.</p>
+      </article>
+      <article class="term">
+        <h3>지연 이체</h3>
+        <p class="term-desc">송금 버튼을 눌러도 돈이 바로 넘어가지 않고, 3시간이나 4시간 뒤에 전달되도록 설정하는 기능입니다. 혹시라도 사기를 당했거나 돈을 잘못 보냈을 때 취소할 수 있는 시간을 벌어줍니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>천천히 돈 보내는 안전장치입니다.</p>
+      </article>
+    </details>
+
+    <details class="glossary-group">
+      <summary><span class="glossary-icon">⚙️</span>앱 서비스와 편의 기능</summary>
+      <article class="term">
+        <h3>자동이체</h3>
+        <p class="term-desc">아파트 관리비나 전화요금, 보험료처럼 매달 정해진 날짜에 알아서 통장에서 돈이 빠져나가도록 등록해 두는 서비스입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>알아서 빠져나가는 공과금 예약 서비스입니다.</p>
+      </article>
+      <article class="term">
+        <h3>오픈뱅킹</h3>
+        <p class="term-desc">은행 앱 하나만 켜면 내가 다른 은행에 가지고 있는 통장의 잔액까지 확인하고 돈도 보낼 수 있는 통합 서비스입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>모든 통장을 열 수 있는 만능 마스터키입니다.</p>
+      </article>
+      <article class="term">
+        <h3>거래 내역</h3>
+        <p class="term-desc">언제, 누구에게, 얼마의 돈이 들어오고 나갔는지 통장에 기록된 내용입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>스마트폰으로 보는 전자 통장 정리입니다.</p>
+      </article>
+      <article class="term">
+        <h3>PUSH 알림 <small>푸시</small></h3>
+        <p class="term-desc">내 통장에서 돈이 빠져나가거나 들어왔을 때 스마트폰 화면 위에 소리나 진동으로 바로 소식을 알려주는 기능입니다.</p>
+        <p class="term-like"><span class="term-like-tag">쉬운 비유</span>스마트폰 현관문 벨입니다.</p>
+      </article>
+    </details>
+
+    <button id="glossary-to-quiz" class="primary"><span class="btn-icon">✏️</span>O·X 퀴즈 풀러 가기</button>
+    <button data-goto="intro"><span class="btn-icon">↩️</span>처음 화면으로</button>
+  </section>
+
   <section class="screen" id="screen-quiz"></section>
 
   <div id="help-bar">
@@ -133,7 +261,7 @@
 <script>
 window.BankUI = (function () {
   // intro 는 미션 단계가 아니다(missions.json 에 없음) — quiz 와 같은 방식의 순수 화면 전환.
-  var SCREENS = ['intro', 'home', 'bank', 'account', 'amount', 'confirm', 'done', 'quiz'];
+  var SCREENS = ['intro', 'home', 'bank', 'account', 'amount', 'confirm', 'done', 'glossary', 'quiz'];
 
   // F17 진행 표시. 문구는 missions.json 의 label 에서 온다 — 여기에 단계 이름을 적지 않는다.
   // done 은 label 이 있어도 세지 않는다 — 4차 UI 확정(SPEC 13.6)에서 "완료 화면엔 진행칸 안 보임"으로
@@ -174,6 +302,18 @@ window.BankUI = (function () {
     el.hidden = ['bank', 'account', 'amount', 'confirm'].indexOf(name) === -1;
   }
 
+  // 사전·퀴즈는 미션 단계가 아니라 도움바를 숨긴다.
+  // 배선은 guide/ai-guide.js 소유다 — 여기서는 보이고 안 보이고만 정한다.
+  function toggleHelp(name) {
+    var off = (name === 'glossary' || name === 'quiz');
+    var bar = document.getElementById('help-bar');
+    var box = document.getElementById('question-box');
+    var answer = document.getElementById('ai-answer');
+    if (bar) bar.hidden = off;
+    if (off && box) box.hidden = true;          // 열려 있던 질문칸도 같이 닫는다
+    if (off && answer) answer.textContent = '';
+  }
+
   function showStep(name) {
     if (SCREENS.indexOf(name) === -1) {
       console.warn('[BankUI] 모르는 화면:', name);
@@ -190,6 +330,7 @@ window.BankUI = (function () {
       if (el2) el2.textContent = (m2 && m2.title) ? m2.title : '';
     }
     if (name === 'confirm' || name === 'done') fillMissionValues();
+    toggleHelp(name);
     updateProgress(name);
     updateHeader(name);
     updateExitLink(name);
@@ -280,6 +421,16 @@ document.addEventListener('click', function (e) {
   var el = e.target.closest('[data-goto]');
   if (!el) return;
   window.BankUI.showStep(el.getAttribute('data-goto'));
+});
+
+// 용어 사전 맨 아래 → O·X 퀴즈. 퀴즈 화면 안쪽은 mission/quiz.js 소유라 Quiz.start() 를 부르기만 한다.
+document.getElementById('glossary-to-quiz').addEventListener('click', function () {
+  if (window.Quiz && typeof window.Quiz.start === 'function') {
+    window.BankUI.showStep('quiz');
+    window.Quiz.start();
+    return;
+  }
+  window.BankUI.showAnswer('O·X 퀴즈는 아직 준비 중이에요. 용어 사전을 먼저 읽어 보세요.');
 });
 
 document.addEventListener('click', function (e) {

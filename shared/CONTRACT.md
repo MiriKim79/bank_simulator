@@ -2,11 +2,12 @@
 
 이 파일을 고치려면 세 사람이 같이 고친다. 혼자 바꾸면 다른 두 명 코드가 깨진다.
 
-## 1. 화면 이름 8개 (그중 미션 단계는 6개)
+## 1. 화면 이름 9개 (그중 미션 단계는 6개)
 
 미션 단계:  home → bank → account → amount → confirm → done
-미션 아님:  intro  (첫 화면. 미션 안내만 보여주고 "송금 연습 시작"을 누르면 home 으로 간다. data-goto 로 전환하며 MissionEngine 을 부르지 않는다)
-미션 아님:  quiz   (F16, Should. 완료 화면에서 들어가고 완료 화면으로 돌아온다)
+미션 아님:  intro     (첫 화면. 미션 안내만 보여주고 "송금 연습 시작"을 누르면 home 으로 간다. data-goto 로 전환하며 MissionEngine 을 부르지 않는다)
+미션 아님:  glossary  (쉬운 금융 용어 사전. intro 에서 들어가고, 맨 아래에서 quiz 로 이어지거나 intro 로 돌아간다. 2026-08-19 추가)
+미션 아님:  quiz      (F16. glossary 에서 들어가거나 완료 화면에서 들어간다. 끝나면 intro 로 돌아간다 — mission/CHANGELOG-INBOX 0819-2210-서정 참고)
 
 문자열 그대로 쓴다. 대문자·한글·별칭 금지.
 
@@ -35,13 +36,12 @@ styles.css 만 같은 폴더라 그대로 쓴다.
 ## 3. DOM 규칙 (A가 지킨다)
 
 - 화면 하나 = `<section class="screen" id="screen-{화면이름}">`
-  `#screen-intro` `#screen-home` `#screen-bank` `#screen-account` `#screen-amount` `#screen-confirm` `#screen-done` `#screen-quiz`
+  `#screen-intro` `#screen-home` `#screen-bank` `#screen-account` `#screen-amount` `#screen-confirm` `#screen-done` `#screen-glossary` `#screen-quiz`
 - 현재 화면만 `is-active` 클래스를 가진다. 나머지는 CSS로 숨는다.
 - 미션 입력은 전부 `data-action` 을 가진다. 값이 필요하면 `data-value` 도 가진다.
   `data-action` 값은 missions.json 의 action 과 **정확히 같아야 한다.**
   - `transfer`  — 홈의 이체 버튼
-  - `history`   — 홈의 거래내역 버튼 (미션 정답 아님)
-  - `balance`   — 홈의 잔액조회 버튼 (미션 정답 아님)
+  - `history`   — 홈의 거래내역 버튼 (미션 정답 아님, F8 오답 회복 검증에 씀)
   - `pick-bank` + `data-value="한걸음은행"` — 은행 선택
   - `submit-account` — 계좌번호 확인
   - `submit-amount`  — 금액 확인
@@ -52,9 +52,9 @@ styles.css 만 같은 폴더라 그대로 쓴다.
 - 질문 입력: `#question-box`(감싸는 div), `#question-text`(input), `#question-send`(button)
 - AI 답변이 들어갈 곳: `#ai-answer`
 - 진행 표시(F17): `#progress` — `showStep` 이 missions.json 의 `label` 로 갱신한다
-- 퀴즈 진입 버튼: `#quiz-start` (완료 화면 안), `#quiz-start-intro` (인트로 화면 안, 4차 UI 확정·SPEC 13.6 U6).
+- 퀴즈 진입 버튼: `#quiz-start` (완료 화면 안, hidden 으로 시작 — quiz.js 가 로딩 성공하면 노출·배선한다),
+  `#glossary-to-quiz` (용어 사전 맨 아래. hidden 아님 — quiz.js 가 없으면 `BankUI.showAnswer()` 로 "준비 중" 안내만 하고 상태머신엔 안 간다)
   **둘 다 data-action 을 쓰지 않는다** — 미션 입력이 아니므로 상태머신에 가면 안 된다.
-  둘 다 hidden 상태로 시작한다. B 의 `quiz.js` 가 로드되면 두 버튼을 같이 노출·배선한다
 - 퀴즈 화면 안쪽은 비워 둔다. B의 quiz.js 가 그려 넣는다.
 
 **data-action 이 없는 것은 상태머신에 가지 않는다.** 도움바·질문칸·키패드·퀴즈가 그렇다.
@@ -62,7 +62,7 @@ styles.css 만 같은 폴더라 그대로 쓴다.
 ## 4. window.BankUI (A가 만든다)
 
 - `BankUI.showStep(name)` -> undefined
-  name 은 1절의 7개 문자열 중 하나. 해당 화면만 보이게 한다. 모르는 값이면 console.warn.
+  name 은 1절의 9개 문자열 중 하나. 해당 화면만 보이게 한다. 모르는 값이면 console.warn.
 - `BankUI.showAnswer(text)` -> undefined
   `#ai-answer` 에 text 를 표시한다. 빈 문자열이면 비운다.
 - `BankUI.showError(message, selector)` -> undefined

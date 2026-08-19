@@ -9,7 +9,7 @@
 
 | 폴더 | 레인 | 담당 | 하는 일 | 파일 |
 |------|------|------|---------|------|
-| `screen/` | A 화면 | 영원 | 화면 8개 DOM·화면 전환·클릭 위임·도움바 DOM·진행 표시(F17) | `bank-ui.html`, `styles.css` |
+| `screen/` | A 화면 | 영원 | 화면 9개 DOM·화면 전환·클릭 위임·도움바 DOM·진행 표시(F17) | `bank-ui.html`, `styles.css` |
 | `mission/` | B 로직 | 서정 | 미션 데이터·상태머신·오답 문구·용어 퀴즈(F16) | `missions.json`, `mission-engine.js`, `quiz-data.json`, `quiz.js` |
 | `guide/` | C 답변·음성 | 미리 | 미리 쓴 답변·askAI 폴백(F13)·도움바 배선(F14)·마이크·TTS(F12, F11) | `qa-data.json`, `ai-guide.js`, `voice.js` |
 | `shared/` | 통합 | **통합자 = 미리** | 인터페이스 계약, LLM 설정 자리 | `CONTRACT.md`, `llm-config.js`(커밋 안 함) |
@@ -40,7 +40,7 @@
 
 | 약속 | 지금 값 |
 |------|---------|
-| 화면 이름 8개 | `home` `bank` `account` `amount` `confirm` `done` + `intro`·`quiz`(둘 다 미션 아님) |
+| 화면 이름 9개 | `home` `bank` `account` `amount` `confirm` `done` + `intro`·`glossary`·`quiz`(셋 다 미션 아님) |
 | 미션 단계 6개 | `home` → `bank` → `account` → `amount` → `confirm` → `done` |
 | `data-action` 값 | `transfer` `pick-bank` `submit-account` `submit-amount` `confirm` `restart` (+ 키패드는 `data-key`) |
 | 미션 데이터 파일 | `mission/missions.json` — 객체 **하나**(미션은 송금 1개, 배열 아님) |

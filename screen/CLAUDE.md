@@ -6,9 +6,9 @@
 
 ## 이 폴더가 하는 일
 
-화면에 무엇이 어디에 보이는가. 화면 7개·버튼·글자·배치·흔들림.
+화면에 무엇이 어디에 보이는가. 화면 9개·버튼·글자·배치·흔들림.
 
-- `screen/bank-ui.html` — 화면 7개 DOM, `window.BankUI`, 클릭 위임, 도움바 DOM, `<script src>` 선언
+- `screen/bank-ui.html` — 화면 9개 DOM, `window.BankUI`, 클릭 위임, 도움바 DOM, `<script src>` 선언
 - `screen/styles.css` — 색·크기·표시/숨김·흔들림·폰 셸·키패드
 
 담당 Task: `plan.md` 의 A1~A5(Must), A6~A8(Should/Could).
