@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "팀 공통. 담당(OWNERS.md)이 아직 미정이므로 폴더 deny 는 비어 있다. 담당이 정해지면 각자 OWNERS.md 의 '담당이 정해지면 할 일' 1단계대로 자기 폴더 밖을 deny 에 넣는다. 이 파일은 사람마다 달라진다.",
+  "_comment2": "Edit 규칙 하나가 Write·NotebookEdit 까지 덮는다. Write(...) 로 경로를 쓰면 무시된다. Read 는 일부러 안 막는다 - 남의 코드는 읽어야 하고 Read deny 는 같은 경로의 Edit 까지 막는다.",
+
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  },
+
+  "permissions": {
+    "allow": [
+      "Bash(python3 -m http.server *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(node --check *)"
+    ],
+    "ask": [
+      "Edit(CLAUDE.md)",
+      "Edit(OWNERS.md)",
+      "Edit(SPEC.md)",
+      "Edit(plan.md)"
+    ],
+    "deny": [
+      "Read(shared/llm-config.js)",
+      "Read(.env)",
+      "Read(secrets/**)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)"
+    ]
+  },
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/syntax-check.py\"",
+            "timeout": 5,
+            "statusMessage": "문법 검사"
+          }
+        ]
+      }
+    ]
+  }
+}

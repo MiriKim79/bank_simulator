@@ -13,3 +13,14 @@ Thumbs.db
 # IDE 개인 설정
 .vscode/
 .idea/
+
+# LLM 설정 (API 키가 들어가는 유일한 파일 — 절대 커밋 금지)
+shared/llm-config.js
+
+# 스킬 작업 폴더 / 개인 산출물 (팀 앱과 무관)
+_workspace/
+personal/
+
+# 파이썬 캐시 (훅 실행 시 생김)
+__pycache__/
+*.pyc
