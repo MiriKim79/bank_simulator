@@ -69,7 +69,7 @@ app/styles.css:203 - .shake 에 prefers-reduced-motion 대응이 없다 - 기존
 1. **동작 오류** — null/undefined 미처리, 잘못된 비교, 순서 뒤바뀐 호출, 이벤트 리스너 중복 등록, 오타 난 id·클래스명, `addEventListener` 가 잡는 요소가 실제 DOM 에 없는 경우.
 2. **인터페이스 위반** — `app/CONTRACT.md` 가 있으면 먼저 읽는다. 거기 적힌 단계 이름 6개(`home`/`bank`/`account`/`amount`/`confirm`/`done`), `data-action` 값, DOM id, `BankUI`/`MissionEngine`/`AIGuide`/`Voice` 함수 시그니처와 어긋나면 지적한다. 세 사람이 파일을 나눠 작업하므로 이게 가장 비싼 오류다.
 3. **담당 파일 침범** — `SPEC.md` 11.2 의 분담표를 벗어나 남의 파일을 고쳤으면 지적한다.
-4. **범위 위반** — `SPEC.md` 의 Won't 기능이 코드에 들어왔으면 지적한다. 특히 `speechSynthesis` 호출(F11 음성 낭독)은 무조건 지적한다.
+4. **범위 위반** — `SPEC.md` 의 Won't 기능이 코드에 들어왔으면 지적한다. `speechSynthesis` 호출(F11 음성 낭독)은 SPEC 12.1에서 Should로 확정돼 `guide/` 안에서 쓰는 것은 정상이다. `guide/` 밖에서 부르거나, 중복 재생 방지 없이 무조건 재생하면 지적한다.
 5. **보안** — API 키·토큰·비밀번호가 소스에 박혔으면 지적한다. 프론트엔드 정적 파일이라 페이지 소스에 그대로 노출된다.
 6. **프로젝트 규약** — 루트 `CLAUDE.md` 기준. 색상은 `:root` 커스텀 프로퍼티로 정의하고 다크모드 오버라이드도 같이 넣을 것, 새 애니메이션은 `@media (prefers-reduced-motion: reduce)` 선택자 목록에 추가할 것, 섹션 앵커와 네비게이션 링크를 맞출 것.
 
