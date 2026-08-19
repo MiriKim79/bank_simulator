@@ -52,8 +52,9 @@ styles.css 만 같은 폴더라 그대로 쓴다.
 - 질문 입력: `#question-box`(감싸는 div), `#question-text`(input), `#question-send`(button)
 - AI 답변이 들어갈 곳: `#ai-answer`
 - 진행 표시(F17): `#progress` — `showStep` 이 missions.json 의 `label` 로 갱신한다
-- 퀴즈 진입 버튼: `#quiz-start` (완료 화면 안. data-action 을 쓰지 않는다 —
-  미션 입력이 아니므로 상태머신에 가면 안 된다)
+- 퀴즈 진입 버튼: `#quiz-start` (완료 화면 안), `#quiz-start-intro` (인트로 화면 안, 4차 UI 확정·SPEC 13.6 U6).
+  **둘 다 data-action 을 쓰지 않는다** — 미션 입력이 아니므로 상태머신에 가면 안 된다.
+  둘 다 hidden 상태로 시작한다. B 의 `quiz.js` 가 로드되면 두 버튼을 같이 노출·배선한다
 - 퀴즈 화면 안쪽은 비워 둔다. B의 quiz.js 가 그려 넣는다.
 
 **data-action 이 없는 것은 상태머신에 가지 않는다.** 도움바·질문칸·키패드·퀴즈가 그렇다.

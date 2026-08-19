@@ -176,13 +176,34 @@ input {
 .question-input-row input { min-height: 56px; font-size: 20px; }
 .question-input-row button { margin: 0; width: auto; padding: 0 20px; min-height: 56px; font-size: 18px; }
 
-/* F17 진행 표시 — 위치만 알려주는 작은 1줄. 크게 만들면 F10(Won't) 이 된다. */
+/* F17 진행 표시 — 위치만 알려주는 작은 배지. 크게 만들면 F10(Won't) 이 된다. */
 #progress {
+  display: inline-block;
   margin: 0 0 12px;
-  font-size: 16px;
+  padding: 4px 10px;
+  font-size: 15px;
   color: var(--accent);
+  background: var(--info-bg);
+  border-radius: 999px;
   font-weight: 600;
 }
+#progress[hidden] { display: none; }
+
+#exit-to-home {
+  display: inline-block;
+  width: auto;
+  min-height: 0;
+  margin: 0 0 8px;
+  padding: 6px 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+  opacity: 0.65;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+#exit-to-home[hidden] { display: none; }
 
 .label-sm { margin: 0; font-size: 16px; color: var(--accent); font-weight: bold; }
 .account-no { margin: 0; color: var(--fg); opacity: 0.7; font-size: 18px; }

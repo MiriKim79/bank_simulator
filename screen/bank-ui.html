@@ -22,11 +22,13 @@
   </header>
 
   <p id="progress" hidden></p>
+  <button id="exit-to-home" data-goto="home" class="link-btn" hidden>← 처음으로</button>
 
   <section class="screen is-active" id="screen-intro">
     <h1>오늘의 미션</h1>
     <p id="intro-mission" class="mission-banner"></p>
     <button data-goto="home" class="primary">송금 연습 시작</button>
+    <button id="quiz-start-intro" hidden><span class="btn-icon">📚</span>금융 용어 퀴즈</button>
   </section>
 
   <section class="screen" id="screen-home">
@@ -38,11 +40,9 @@
     </div>
     <button data-action="transfer" class="primary"><span class="btn-icon">💸</span>이체<small>돈 보내기</small></button>
     <button data-action="history"><span class="btn-icon">📋</span>거래내역<small>들어오고 나간 기록</small></button>
-    <button data-action="balance"><span class="btn-icon">💰</span>잔액조회<small>남은 돈 보기</small></button>
   </section>
   <section class="screen" id="screen-bank">
     <h1>어느 은행으로 보내나요?</h1>
-    <p class="hint">받는 사람: 김민수</p>
     <button data-action="pick-bank" data-value="한걸음은행"><span class="btn-icon">🏦</span>한걸음은행</button>
     <button data-action="pick-bank" data-value="새봄은행"><span class="btn-icon">🏦</span>새봄은행</button>
     <button data-action="pick-bank" data-value="푸른은행"><span class="btn-icon">🏦</span>푸른은행</button>
@@ -50,7 +50,6 @@
 
   <section class="screen" id="screen-account">
     <h1>계좌번호를 넣으세요</h1>
-    <p class="hint">수취인: 김민수 (한걸음은행)</p>
     <input id="input-account" type="text" inputmode="numeric" placeholder="숫자만 입력">
     <div class="keypad" data-target="input-account">
       <button type="button" data-key="1">1</button>
@@ -71,7 +70,6 @@
 
   <section class="screen" id="screen-amount">
     <h1>얼마를 보내나요?</h1>
-    <p class="hint">수취인: 김민수</p>
     <input id="input-amount" type="text" inputmode="numeric" placeholder="숫자만 입력">
     <div class="keypad" data-target="input-amount">
       <button type="button" data-key="1">1</button>
@@ -138,22 +136,42 @@ window.BankUI = (function () {
   var SCREENS = ['intro', 'home', 'bank', 'account', 'amount', 'confirm', 'done', 'quiz'];
 
   // F17 진행 표시. 문구는 missions.json 의 label 에서 온다 — 여기에 단계 이름을 적지 않는다.
+  // done 은 label 이 있어도 세지 않는다 — 4차 UI 확정(SPEC 13.6)에서 "완료 화면엔 진행칸 안 보임"으로
+  // 결정했다. missions.json 의 label 자체는 안 건드린다(그건 B 소관) — 화면 쪽 표시만 뺀다.
   function updateProgress(name) {
     var el = document.getElementById('progress');
     if (!el) return;
     var m = (window.MissionEngine && window.MissionEngine.getMission)
       ? window.MissionEngine.getMission() : null;
     var steps = (m && Array.isArray(m.steps)) ? m.steps : [];
-    var labeled = steps.filter(function (s) { return s.label; });
+    var labeled = steps.filter(function (s) { return s.label && s.step !== 'done'; });
     var idx = -1;
     labeled.forEach(function (s, i) { if (s.step === name) idx = i; });
-    if (idx === -1) {              // home(label 없음)·quiz(미션 아님)
+    if (idx === -1) {              // home·done(진행칸 없음)·quiz(미션 아님)
       el.textContent = '';
       el.hidden = true;
       return;
     }
     el.hidden = false;
     el.textContent = (idx + 1) + ' / ' + labeled.length + ' 단계 — ' + labeled[idx].label;
+  }
+
+  // 4차 UI 확정: 인트로 화면에만 앱 이름·부제를 보여준다. 나머지 화면은 "한 화면 = 한 행동"으로
+  // 반복 노출을 줄인다. 안전 문구(#app-safety)는 SOL 레퍼런스처럼 어느 화면에서나 그대로 둔다(13.3 R5).
+  function updateHeader(name) {
+    var title = document.getElementById('app-title');
+    var subtitle = document.getElementById('app-subtitle');
+    var isIntro = name === 'intro';
+    if (title) title.hidden = !isIntro;
+    if (subtitle) subtitle.hidden = !isIntro;
+  }
+
+  // 홈으로 돌아가는 링크. 상태머신(F7)엔 뒤로 가기 개념이 없어 "이전 단계"가 아니라
+  // "처음 화면 보기"다 — 다시 데이터를 넣으면 원래 있던 단계에서 이어진다.
+  function updateExitLink(name) {
+    var el = document.getElementById('exit-to-home');
+    if (!el) return;
+    el.hidden = ['bank', 'account', 'amount', 'confirm'].indexOf(name) === -1;
   }
 
   function showStep(name) {
@@ -173,6 +191,8 @@ window.BankUI = (function () {
     }
     if (name === 'confirm' || name === 'done') fillMissionValues();
     updateProgress(name);
+    updateHeader(name);
+    updateExitLink(name);
   }
 
   // 계좌번호·금액·은행명은 missions.json 의 step value 에서 그대로 가져다 쓴다.
