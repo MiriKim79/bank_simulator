@@ -64,6 +64,18 @@ window.AIGuide = {
   }
 };
 
+// F11(TTS, Should): 답변을 선택적으로 읽어준다. 같은 문장을 중복 재생하지 않는다.
+var lastSpoken = null;
+function speak(text) {
+  if (!window.speechSynthesis || !text) return;
+  if (text === lastSpoken && window.speechSynthesis.speaking) return;
+  lastSpoken = text;
+  window.speechSynthesis.cancel();
+  var utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ko-KR';
+  window.speechSynthesis.speak(utterance);
+}
+
 function wireHelpBar() {
   if (wireHelpBar.done) return;
   wireHelpBar.done = true;
@@ -73,12 +85,14 @@ function wireHelpBar() {
   var repeat = document.getElementById('help-repeat');
   var open = document.getElementById('help-ask');
   var send = document.getElementById('question-send');
+  var mic = document.getElementById('mic-button');
 
   function ask(question) {
     var step = window.MissionEngine ? window.MissionEngine.getStep() : undefined;
     var mission = window.MissionEngine ? window.MissionEngine.getMission() : undefined;
     window.AIGuide.askAI(question, step, mission).then(function (answer) {
       if (window.BankUI) window.BankUI.showAnswer(answer);
+      speak(answer);
     });
   }
 
@@ -96,6 +110,17 @@ function wireHelpBar() {
   if (input) input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') sendQuestion();
   });
+
+  // F12(STT, Should): 지원되는 브라우저에서만 마이크 버튼을 보이고, 실패 시 텍스트 입력으로 폴백한다.
+  if (mic && window.Voice && window.Voice.isSupported()) {
+    mic.hidden = false;
+    mic.addEventListener('click', function () {
+      window.Voice.startListening(
+        function (text) { ask(text); },
+        function () { if (box) box.hidden = false; }
+      );
+    });
+  }
 }
 
 if (document.readyState === 'loading') {

@@ -27,6 +27,7 @@
   <section class="screen is-active" id="screen-intro">
     <h1>오늘의 미션</h1>
     <p id="intro-mission" class="mission-banner"></p>
+    <p id="intro-account" class="hint"></p>
     <button data-goto="home" class="primary">송금 연습 시작</button>
     <button data-goto="glossary"><span class="btn-icon">📖</span>금융 용어 퀴즈<small>쉬운 말 사전부터 보기</small></button>
   </section>
@@ -328,6 +329,14 @@ window.BankUI = (function () {
       var m2 = (window.MissionEngine && window.MissionEngine.getMission)
         ? window.MissionEngine.getMission() : null;
       if (el2) el2.textContent = (m2 && m2.title) ? m2.title : '';
+      // 계좌번호를 안 알려주면 사용자가 account 단계에서 틀려보거나 AI에게 물어야만 안다 —
+      // 이 미션은 번호를 외우는 연습이 아니라 화면을 다루는 연습이라 처음부터 보여준다.
+      var elAcc = document.getElementById('intro-account');
+      if (elAcc) {
+        var bank2 = missionStepValue(m2, 'bank');
+        var acc2 = missionStepValue(m2, 'account');
+        elAcc.textContent = (bank2 && acc2) ? ('받는 계좌: ' + bank2 + ' ' + acc2) : '';
+      }
     }
     if (name === 'confirm' || name === 'done') fillMissionValues();
     toggleHelp(name);
@@ -338,17 +347,18 @@ window.BankUI = (function () {
 
   // 계좌번호·금액·은행명은 missions.json 의 step value 에서 그대로 가져다 쓴다.
   // (수취인 이름은 스키마에 필드가 없어 하드코딩으로 남는다.)
+  function missionStepValue(m, step) {
+    var steps = (m && Array.isArray(m.steps)) ? m.steps : [];
+    var found = steps.filter(function (s) { return s.step === step; })[0];
+    return found ? found.value : '';
+  }
+
   function fillMissionValues() {
     var m = (window.MissionEngine && window.MissionEngine.getMission)
       ? window.MissionEngine.getMission() : null;
-    var steps = (m && Array.isArray(m.steps)) ? m.steps : [];
-    function valueOf(step) {
-      var found = steps.filter(function (s) { return s.step === step; })[0];
-      return found ? found.value : '';
-    }
-    var bank = valueOf('bank');
-    var account = valueOf('account');
-    var amount = valueOf('amount');
+    var bank = missionStepValue(m, 'bank');
+    var account = missionStepValue(m, 'account');
+    var amount = missionStepValue(m, 'amount');
     var amountFmt = amount ? Number(amount).toLocaleString('ko-KR') : '';
 
     var elBank = document.getElementById('confirm-bank');
