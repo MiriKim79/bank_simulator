@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>금융한걸음 — 송금 연습</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main id="phone">
+
+  <p id="progress" hidden></p>
+
+  <section class="screen is-active" id="screen-home"><h1>홈</h1></section>
+  <section class="screen" id="screen-bank"><h1>은행 선택</h1></section>
+  <section class="screen" id="screen-account"><h1>계좌번호</h1></section>
+  <section class="screen" id="screen-amount"><h1>금액</h1></section>
+  <section class="screen" id="screen-confirm"><h1>확인</h1></section>
+  <section class="screen" id="screen-done"><h1>완료</h1></section>
+  <section class="screen" id="screen-quiz"></section>
+
+  <p id="ai-answer"></p>
+</main>
+
+<script>
+window.BankUI = (function () {
+  var SCREENS = ['home', 'bank', 'account', 'amount', 'confirm', 'done', 'quiz'];
+
+  // F17 진행 표시. 문구는 missions.json 의 label 에서 온다 — 여기에 단계 이름을 적지 않는다.
+  function updateProgress(name) {
+    var el = document.getElementById('progress');
+    if (!el) return;
+    var m = (window.MissionEngine && window.MissionEngine.getMission)
+      ? window.MissionEngine.getMission() : null;
+    var steps = (m && Array.isArray(m.steps)) ? m.steps : [];
+    var labeled = steps.filter(function (s) { return s.label; });
+    var idx = -1;
+    labeled.forEach(function (s, i) { if (s.step === name) idx = i; });
+    if (idx === -1) {              // home(label 없음)·quiz(미션 아님)
+      el.textContent = '';
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    el.textContent = (idx + 1) + ' / ' + labeled.length + ' 단계 — ' + labeled[idx].label;
+  }
+
+  function showStep(name) {
+    if (SCREENS.indexOf(name) === -1) {
+      console.warn('[BankUI] 모르는 화면:', name);
+      return;
+    }
+    SCREENS.forEach(function (s) {
+      var el = document.getElementById('screen-' + s);
+      if (el) el.classList.toggle('is-active', s === name);
+    });
+    updateProgress(name);
+  }
+
+  function showAnswer(text) {
+    var box = document.getElementById('ai-answer');
+    if (box) box.textContent = text || '';
+  }
+
+  function showError(message, selector) {
+    showAnswer(message);
+    // 흔들림은 A5(F8)에서 채운다.
+  }
+
+  return { showStep: showStep, showAnswer: showAnswer, showError: showError };
+})();
+</script>
+
+<script src="../shared/llm-config.js"></script>
+<script src="../mission/mission-engine.js"></script>
+<script src="../guide/voice.js"></script>
+<script src="../guide/ai-guide.js"></script>
+<script src="../mission/quiz.js"></script>
+</body>
+</html>
