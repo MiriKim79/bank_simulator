@@ -100,3 +100,6 @@ input {
 .account-no { margin: 0; color: var(--fg); opacity: 0.7; font-size: 18px; }
 .balance { margin: 4px 0 24px; font-size: 24px; }
 .balance strong { font-size: 36px; }
+
+.hint { margin: 0 0 20px; font-size: 20px; opacity: 0.85; }
+.hint strong { font-size: 28px; opacity: 1; }

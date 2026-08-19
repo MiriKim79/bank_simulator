@@ -21,11 +21,44 @@
     <button data-action="history">거래내역</button>
     <button data-action="balance">잔액조회</button>
   </section>
-  <section class="screen" id="screen-bank"><h1>은행 선택</h1></section>
-  <section class="screen" id="screen-account"><h1>계좌번호</h1></section>
-  <section class="screen" id="screen-amount"><h1>금액</h1></section>
-  <section class="screen" id="screen-confirm"><h1>확인</h1></section>
-  <section class="screen" id="screen-done"><h1>완료</h1></section>
+  <section class="screen" id="screen-bank">
+    <h1>어느 은행으로 보내나요?</h1>
+    <p class="hint">받는 사람: 김민수</p>
+    <button data-action="pick-bank" data-value="한걸음은행">한걸음은행</button>
+    <button data-action="pick-bank" data-value="새봄은행">새봄은행</button>
+    <button data-action="pick-bank" data-value="푸른은행">푸른은행</button>
+  </section>
+
+  <section class="screen" id="screen-account">
+    <h1>계좌번호를 넣으세요</h1>
+    <p class="hint">수취인: 김민수 (한걸음은행)</p>
+    <input id="input-account" type="text" inputmode="numeric" placeholder="숫자만 입력">
+    <button data-action="submit-account" class="primary">다음</button>
+  </section>
+
+  <section class="screen" id="screen-amount">
+    <h1>얼마를 보내나요?</h1>
+    <p class="hint">수취인: 김민수</p>
+    <input id="input-amount" type="text" inputmode="numeric" placeholder="숫자만 입력">
+    <button data-action="submit-amount" class="primary">다음</button>
+  </section>
+
+  <section class="screen" id="screen-confirm">
+    <h1>이대로 보낼까요?</h1>
+    <p class="hint">출금계좌: 한걸음은행 123456-78-901234<br>
+      수취인: 김민수<br>
+      계좌번호: 한걸음은행 11022233344<br>
+      <strong>50,000 원</strong></p>
+    <button data-action="confirm" class="primary">보내기</button>
+  </section>
+
+  <section class="screen" id="screen-done">
+    <h1>보냈습니다</h1>
+    <p class="hint">김민수님에게 <strong>50,000 원</strong>을 보냈습니다.</p>
+    <p class="hint">연습이라 실제 돈은 움직이지 않았습니다.</p>
+    <button data-action="restart" class="primary">다시 연습하기</button>
+    <button id="quiz-start" hidden>용어 복습하기</button>
+  </section>
   <section class="screen" id="screen-quiz"></section>
 
   <p id="ai-answer"></p>
