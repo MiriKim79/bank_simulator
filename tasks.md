@@ -38,7 +38,7 @@
 
 ### Task S0 — 계약 · missions.json · 스텁 · 서버 · git
 
-- [ ] 0.1 `mkdir -p screen mission guide shared` (폴더는 이미 있다 — `OWNERS.md`). **`git init` 안 함** — 원격이 이미 있다. `git clone` 후 `git checkout develop`. **S0(계약·missions.json·스텁)은 셋이 같이 만드는 예외라 `develop`에 바로 커밋한다** — S0 이후 A·B·C 각자의 작업은 자기 `feature/*` 브랜치(`feature/screen-ui`·`feature/mission-engine`·`feature/ai-guide`)에서 한다
+- [ ] 0.1 `mkdir -p screen mission guide shared` (폴더는 이미 있다 — `OWNERS.md`). **`git init` 안 함** — 원격이 이미 있다. `git clone` 후 `git checkout develop`. S0(계약·missions.json·스텁)은 셋이 같이 만드므로 `develop`에 바로 커밋한다. 그 이후 A·B·C 각자의 작업은 권장 흐름(`feature/screen-ui`·`feature/mission-engine`·`feature/ai-guide` 같은 `feature/*` 브랜치)을 써도 되고, 필요하면 `develop`에 바로 커밋해도 된다
 - [ ] 0.2 `.gitignore` 는 원격에 이미 있다. 빠진 두 줄(`shared/llm-config.js`, `_workspace/`)은 **통합자가 PR 로 추가** — 혼자 고치지 않는다
 - [ ] 0.3 **`mission/missions.json` 을 셋이 같이 작성** — 단계 6개의 `step`/`action`/`value`/`next`/**`label`**. `wrong` 은 비워 둠 (B1에서 채움)
   - `label` = F17 진행 표시 문구. `home` 은 빈 문자열, 나머지 5개가 분모 5가 된다

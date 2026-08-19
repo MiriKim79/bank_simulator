@@ -55,7 +55,7 @@ SPEC에서 그대로 가져온 프로젝트 전역 제약. 모든 Task의 요구
 
 ### git 커밋
 
-원격 저장소가 이미 있다 — `https://github.com/MiriKim79/bank_simulator.git`. **셋 다 `develop` 에서 바로 커밋·푸시한다.** feature 브랜치를 따지 않고, `main` 은 `develop` 을 머지해서만 올라간다. 각 Task 의 커밋 메시지는 그대로 쓰면 된다.
+원격 저장소가 이미 있다 — `https://github.com/MiriKim79/bank_simulator.git`. 권장 흐름은 `feature/* → develop → main` 이지만, 이건 협업 흐름 권장이고 강제하는 규칙은 아니다. 지금처럼 **셋 다 `develop` 에서 바로 커밋·푸시**해도 되고, 필요하면 각자 `feature/*` 브랜치를 써도 된다. `main` 은 보통 `develop` 을 머지해서 올린다. 각 Task 의 커밋 메시지는 그대로 쓰면 된다.
 
 같은 브랜치를 쓰지만 세 사람이 **다른 폴더만** 고치므로 merge 충돌은 원리상 나지 않는다. 충돌이 났다면 누군가 남의 폴더를 고친 것이다.
 
@@ -168,7 +168,7 @@ mkdir -p screen mission guide shared
 ```bash
 git clone https://github.com/MiriKim79/bank_simulator.git   # 처음 받는 사람
 cd bank_simulator
-git checkout develop      # 작업은 여기서 바로 한다. feature 브랜치 없음
+git checkout develop      # S0은 여기서 바로 작업. 이후 feature/* 브랜치를 써도 되고 develop에 바로 커밋해도 된다
 ```
 
 이미 로컬에 파일이 있는 사람은 `git init` → `git remote add origin <URL>` → `git fetch origin` → `git checkout -b develop --track origin/develop` 순서로 붙인다.
@@ -431,7 +431,7 @@ git commit -m "chore(s0): 인터페이스 계약, missions.json, 스텁 3개"
 git push
 ```
 
-**S0은 셋이 같이 만드는 계약이라 예외적으로 `develop` 에 바로 올린다.** S0 이후 A·B·C 각자의 Task는 자기 `feature/*` 브랜치(`feature/screen-ui`·`feature/mission-engine`·`feature/ai-guide`)에서 커밋하고 `develop` 대상 PR로 합친다. `main` 은 통합자가 `develop` 을 머지해서만 올린다. 자세한 규칙은 `ZIP-PROTOCOL.md` 의 「Git 협업 규칙」.
+**S0은 셋이 같이 만드는 계약이라 `develop` 에 바로 올린다.** S0 이후 A·B·C 각자의 Task는 자기 `feature/*` 브랜치(`feature/screen-ui`·`feature/mission-engine`·`feature/ai-guide`)를 쓸 수 있다 — 이건 권장 흐름이며 필요하면 `develop`에 바로 커밋해도 된다. `main` 은 보통 `develop` 을 머지해서 올린다. 자세한 규칙은 `ZIP-PROTOCOL.md` 의 「Git 협업 규칙」.
 
 > **게이트**: 세 사람이 `CONTRACT.md` 를 읽고 자기가 만들 함수 이름을 말로 다시 말할 수 있다. `missions.json` 의 `action` 값에 셋이 동의했다. `localhost:8000` 이 뜬다.
 > **여기서 세 사람이 갈라진다. S1까지 서로 부르지 않는다.**

@@ -12,9 +12,9 @@
 
 | 항목 | 값 |
 |---|---|
-| 브랜치 | `feature/*`(기능 개발, 담당자별) → `develop`(통합·검증) → `main`(배포) |
-| 작업 방식 | **각자 자기 `feature/*` 브랜치에서 커밋하고, PR을 `develop` 대상으로 연다.** `main`·`develop` 직접 커밋은 원칙적으로 금지 — 공통 계약(`shared/CONTRACT.md`) 변경처럼 셋이 같이 고쳐야 하는 경우만 합의 후 예외로 `develop`에 바로 커밋한다 |
-| `main` | `develop` 을 **머지해서만** 올라간다. 직접 커밋하지 않는다 |
+| 브랜치 | `main`(최종 안정본) · `develop`(개발 내용 통합) · `feature/*`(팀원별·기능별 작업에 쓸 수 있는 브랜치) |
+| 작업 방식 | 권장 흐름은 `feature/* → develop → main` 이다. 이건 협업 흐름 권장이며, 필요에 따라 `main`이나 `develop`에 직접 commit/push하는 것을 막지 않는다 — 실제 작업 방식은 팀 상황에 맞게 정한다 |
+| `main` | 보통 `develop` 을 머지해서 올린다(배포 시점). |
 | 커밋 | `feat(a1): ...` 처럼 레인·Task 번호를 앞에 붙인다. `plan.md` 각 Task 의 커밋 메시지를 그대로 쓴다 |
 | 올리기 전 | **반드시 `git pull` 먼저.** 셋이 같은 브랜치에 올리므로 남의 커밋 위에 얹어야 한다 |
 | 남의 폴더 | 자기 폴더 밖 파일이 diff 에 있으면 안 된다 (`.claude/agents/code-reviewer.md` 검토 항목 3). 커밋 전에 `git status` 로 확인 |
