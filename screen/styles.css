@@ -94,3 +94,9 @@ input {
   color: var(--accent);
   font-weight: 600;
 }
+
+.mission-title { margin: 0 0 12px; font-size: 16px; font-weight: bold; }
+.label-sm { margin: 0; font-size: 16px; color: var(--accent); font-weight: bold; }
+.account-no { margin: 0; color: var(--fg); opacity: 0.7; font-size: 18px; }
+.balance { margin: 4px 0 24px; font-size: 24px; }
+.balance strong { font-size: 36px; }
