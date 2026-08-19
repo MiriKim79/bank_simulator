@@ -1,0 +1,30 @@
+{
+  "id": "transfer-kimminsu-50000",
+  "title": "김민수에게 5만원 보내기",
+  "steps": [
+    {
+      "step": "home", "action": "transfer", "next": "bank", "label": "",
+      "wrong": "그 버튼은 돈을 보내는 버튼이 아닙니다. 돈을 보내려면 맨 위 파란 \"이체\" 버튼을 누르세요."
+    },
+    {
+      "step": "bank", "action": "pick-bank", "value": "한걸음은행", "next": "account", "label": "은행 선택",
+      "wrong": "받는 사람 김민수님의 은행이 아닙니다. 김민수님 계좌는 한걸음은행이므로 \"한걸음은행\"을 누르세요."
+    },
+    {
+      "step": "account", "action": "submit-account", "value": "11022233344", "next": "amount", "label": "계좌번호 입력",
+      "wrong": "계좌번호가 다릅니다. 11022233344 를 숫자만 넣고 \"다음\"을 누르세요. 작대기(-)는 넣지 않아도 됩니다."
+    },
+    {
+      "step": "amount", "action": "submit-amount", "value": "50000", "next": "confirm", "label": "금액 입력",
+      "wrong": "금액이 다릅니다. 5만원은 숫자로 50000 입니다. 0을 네 개 붙여 50000 을 넣고 \"다음\"을 누르세요."
+    },
+    {
+      "step": "confirm", "action": "confirm", "next": "done", "label": "확인",
+      "wrong": "아직 보내지 않았습니다. 받는 사람과 금액이 맞으면 \"보내기\"를 누르세요."
+    },
+    {
+      "step": "done", "action": "restart", "next": "home", "label": "완료",
+      "wrong": "송금은 끝났습니다. \"다시 연습하기\"를 누르면 처음부터 또 해볼 수 있습니다."
+    }
+  ]
+}
