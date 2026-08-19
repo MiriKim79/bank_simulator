@@ -14,11 +14,7 @@ function normalize(text) {
   return String(text || '').toLowerCase().replace(/\s+/g, '');
 }
 
-function matchLocal(qaData, question, step) {
-  if (!qaData) return DEFAULT_ANSWER;
-  var stepData = qaData.byStep && qaData.byStep[step];
-  if (!stepData) return qaData.default || DEFAULT_ANSWER;
-
+function matchKeywords(stepData, question) {
   var q = normalize(question);
   var best = null;
   var bestHits = 0;
@@ -36,14 +32,34 @@ function matchLocal(qaData, question, step) {
       }
     }
   }
-  if (best) return best.answer;
-  return stepData.fallback || qaData.default || DEFAULT_ANSWER;
+  return best ? best.answer : null;
+}
+
+// missions.json 의 wrong 문구를 그대로 쓴다 — 계좌번호·금액·은행명 같은 미션 값을
+// 여기에 다시 적으면 F6(미션이 데이터로 분리됨)이 깨진다.
+function fromMission(step, mission) {
+  var steps = mission && mission.steps;
+  if (!steps) return null;
+  for (var i = 0; i < steps.length; i++) {
+    if (steps[i].step === step && steps[i].wrong) return steps[i].wrong;
+  }
+  return null;
+}
+
+function matchLocal(qaData, question, step, mission) {
+  if (!qaData) return fromMission(step, mission) || DEFAULT_ANSWER;
+  var stepData = qaData.byStep && qaData.byStep[step];
+  if (!stepData) return qaData.default || DEFAULT_ANSWER;
+
+  var hit = matchKeywords(stepData, question);
+  if (hit) return hit;
+  return fromMission(step, mission) || stepData.fallback || qaData.default || DEFAULT_ANSWER;
 }
 
 window.AIGuide = {
   askAI: function (question, step, mission) {
     return loadQaData()
-      .then(function (qaData) { return matchLocal(qaData, question, step); })
+      .then(function (qaData) { return matchLocal(qaData, question, step, mission); })
       .catch(function () { return DEFAULT_ANSWER; });
   }
 };
