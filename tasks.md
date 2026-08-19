@@ -400,9 +400,9 @@
 | C | C3 도움바 배선 | C | F14 | Must | ☐ |
 | S1 | 합류·완주 | 셋이 | — | — | ☐ |
 | S2 | Must 합격 판정 | 셋이 | 기준 1~6 | — | ☐ |
-| A | A6 폰 셸 | A | F1 | Should | ☐ |
-| A | A7 숫자 키패드 | A | F5 | Should | ☐ |
-| A | A8 용어 병기 | A | F2 | Could | ☐ |
+| A | A6 폰 셸 | A | F1 | Should | ☑ |
+| A | A7 숫자 키패드 | A | F5 | Should | ☑ |
+| A | A8 용어 병기 | A | F2 | Could | ☑ |
 | B | B4 퀴즈 문항 | B | F16 | Should | ☐ |
 | B | B5 퀴즈 엔진 | B | F16 | Should | ☐ |
 | C | C4 마이크 STT | C | F12 | Should | ☐ |
