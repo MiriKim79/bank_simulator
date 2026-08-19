@@ -1,0 +1,12 @@
+{
+  "id": "transfer-kimminsu-50000",
+  "title": "김민수에게 50,000원 보내기",
+  "steps": [
+    { "step": "home",    "action": "transfer",       "next": "bank",    "label": "",           "wrong": "" },
+    { "step": "bank",    "action": "pick-bank",      "value": "한걸음은행", "next": "account", "label": "은행 선택",     "wrong": "" },
+    { "step": "account", "action": "submit-account", "value": "11022233344", "next": "amount", "label": "계좌번호 입력", "wrong": "" },
+    { "step": "amount",  "action": "submit-amount",  "value": "50000",  "next": "confirm", "label": "금액 입력",     "wrong": "" },
+    { "step": "confirm", "action": "confirm",        "next": "done",    "label": "확인",         "wrong": "" },
+    { "step": "done",    "action": "restart",        "next": "home",    "label": "완료",         "wrong": "" }
+  ]
+}
