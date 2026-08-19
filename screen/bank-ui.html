@@ -116,7 +116,7 @@
   </section>
   <section class="screen" id="screen-glossary">
     <h1>쉬운 금융 용어 사전</h1>
-    <p class="hint">궁금한 묶음을 손가락으로 누르면 설명이 펼쳐집니다.</p>
+    <p class="hint">궁금한 내용을 누르면 관련 용어와 설명이 펼쳐집니다.</p>
 
     <details class="glossary-group">
       <summary><span class="glossary-icon">🔑</span>로그인과 비밀번호</summary>
@@ -285,6 +285,18 @@ window.BankUI = (function () {
     el.textContent = (idx + 1) + ' / ' + labeled.length + ' 단계 — ' + labeled[idx].label;
   }
 
+  // 사전·퀴즈는 미션 단계가 아니라 도움바를 숨긴다.
+  // 배선은 guide/ai-guide.js 소유다 — 여기서는 보이고 안 보이고만 정한다.
+  function toggleHelp(name) {
+    var off = (name === 'glossary' || name === 'quiz');
+    var bar = document.getElementById('help-bar');
+    var box = document.getElementById('question-box');
+    var answer = document.getElementById('ai-answer');
+    if (bar) bar.hidden = off;
+    if (off && box) box.hidden = true;          // 열려 있던 질문칸도 같이 닫는다
+    if (off && answer) answer.textContent = '';
+  }
+
   function showStep(name) {
     if (SCREENS.indexOf(name) === -1) {
       console.warn('[BankUI] 모르는 화면:', name);
@@ -301,6 +313,7 @@ window.BankUI = (function () {
       if (el2) el2.textContent = (m2 && m2.title) ? m2.title : '';
     }
     if (name === 'confirm' || name === 'done') fillMissionValues();
+    toggleHelp(name);
     updateProgress(name);
   }
 
