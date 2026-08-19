@@ -157,3 +157,13 @@ input {
   #shell { padding: 0; border-radius: 0; box-shadow: none; }
   #shell #phone { border-radius: 0; min-height: 100vh; }
 }
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+.keypad button { margin: 0; min-height: 68px; font-size: 28px; }
+.keypad button[data-key="clear"],
+.keypad button[data-key="back"] { font-size: 17px; }

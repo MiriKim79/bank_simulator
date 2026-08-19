@@ -34,6 +34,20 @@
     <h1>계좌번호를 넣으세요</h1>
     <p class="hint">수취인: 김민수 (한걸음은행)</p>
     <input id="input-account" type="text" inputmode="numeric" placeholder="숫자만 입력">
+    <div class="keypad" data-target="input-account">
+      <button type="button" data-key="1">1</button>
+      <button type="button" data-key="2">2</button>
+      <button type="button" data-key="3">3</button>
+      <button type="button" data-key="4">4</button>
+      <button type="button" data-key="5">5</button>
+      <button type="button" data-key="6">6</button>
+      <button type="button" data-key="7">7</button>
+      <button type="button" data-key="8">8</button>
+      <button type="button" data-key="9">9</button>
+      <button type="button" data-key="clear">전체지움</button>
+      <button type="button" data-key="0">0</button>
+      <button type="button" data-key="back">← 지움</button>
+    </div>
     <button data-action="submit-account" class="primary">다음</button>
   </section>
 
@@ -41,6 +55,20 @@
     <h1>얼마를 보내나요?</h1>
     <p class="hint">수취인: 김민수</p>
     <input id="input-amount" type="text" inputmode="numeric" placeholder="숫자만 입력">
+    <div class="keypad" data-target="input-amount">
+      <button type="button" data-key="1">1</button>
+      <button type="button" data-key="2">2</button>
+      <button type="button" data-key="3">3</button>
+      <button type="button" data-key="4">4</button>
+      <button type="button" data-key="5">5</button>
+      <button type="button" data-key="6">6</button>
+      <button type="button" data-key="7">7</button>
+      <button type="button" data-key="8">8</button>
+      <button type="button" data-key="9">9</button>
+      <button type="button" data-key="clear">전체지움</button>
+      <button type="button" data-key="0">0</button>
+      <button type="button" data-key="back">← 지움</button>
+    </div>
     <button data-action="submit-amount" class="primary">다음</button>
   </section>
 
@@ -159,6 +187,21 @@ document.addEventListener('click', function (e) {
   }
 
   window.BankUI.showStep(r.step);
+});
+
+document.addEventListener('click', function (e) {
+  var key = e.target.closest('[data-key]');
+  if (!key) return;
+  var pad = key.closest('.keypad');
+  if (!pad) return;
+
+  var input = document.getElementById(pad.getAttribute('data-target'));
+  if (!input) return;
+
+  var k = key.getAttribute('data-key');
+  if (k === 'clear') input.value = '';
+  else if (k === 'back') input.value = input.value.slice(0, -1);
+  else input.value = input.value + k;
 });
 </script>
 
