@@ -59,6 +59,7 @@ button {
   color: var(--fg);
   cursor: pointer;
 }
+button[hidden] { display: none; }
 
 button.primary {
   background: var(--accent);
