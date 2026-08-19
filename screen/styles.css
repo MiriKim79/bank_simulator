@@ -103,3 +103,18 @@ input {
 
 .hint { margin: 0 0 20px; font-size: 20px; opacity: 0.85; }
 .hint strong { font-size: 28px; opacity: 1; }
+
+#help-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 2px solid var(--line);
+}
+#help-bar button { margin: 0; font-size: 17px; min-height: 56px; }
+#help-bar button[hidden] { display: none; }
+
+#question-box { display: flex; gap: 8px; margin-top: 12px; }
+#question-box[hidden] { display: none; }
+#question-box input { min-height: 56px; font-size: 20px; }
+#question-box button { margin: 0; width: auto; padding: 0 20px; min-height: 56px; font-size: 18px; }
