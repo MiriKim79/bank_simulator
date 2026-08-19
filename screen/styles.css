@@ -131,3 +131,29 @@ input {
 @media (prefers-reduced-motion: reduce) {
   .shake { animation: none; }
 }
+
+#shell {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 14px;
+  background: #1b1f27;
+  border-radius: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+#shell #phone {
+  max-width: none;
+  min-height: 640px;
+  border: 0;
+  border-radius: 28px;
+  font-size: 22px;
+}
+#shell #phone h1 { font-size: 32px; }
+#shell #phone button { min-height: 72px; font-size: 24px; }
+#shell #phone #help-bar button { min-height: 60px; font-size: 18px; }
+#shell #phone input { min-height: 72px; font-size: 28px; }
+
+@media (max-width: 460px) {
+  body { padding: 0; }
+  #shell { padding: 0; border-radius: 0; box-shadow: none; }
+  #shell #phone { border-radius: 0; min-height: 100vh; }
+}
