@@ -2,11 +2,13 @@ var DEFAULT_ANSWER = '지금 화면에서 큰 버튼을 하나 누르면 다음�
 var qaDataPromise = null;
 
 function loadQaData() {
-  if (!qaDataPromise) {
-    qaDataPromise = fetch('../guide/qa-data.json')
-      .then(function (res) { return res.json(); })
-      .catch(function () { return null; });
-  }
+  if (qaDataPromise) return qaDataPromise;
+  qaDataPromise = fetch('../guide/qa-data.json')
+    .then(function (res) { return res.json(); })
+    .catch(function () {
+      qaDataPromise = null; // 실패는 기억하지 않는다 — 다음 질문에서 다시 fetch 를 시도한다
+      return null;
+    });
   return qaDataPromise;
 }
 

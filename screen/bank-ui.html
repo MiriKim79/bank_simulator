@@ -52,40 +52,14 @@
   <section class="screen" id="screen-account">
     <h1>계좌번호를 넣으세요</h1>
     <input id="input-account" type="text" inputmode="numeric" placeholder="숫자만 입력">
-    <div class="keypad" data-target="input-account">
-      <button type="button" data-key="1">1</button>
-      <button type="button" data-key="2">2</button>
-      <button type="button" data-key="3">3</button>
-      <button type="button" data-key="4">4</button>
-      <button type="button" data-key="5">5</button>
-      <button type="button" data-key="6">6</button>
-      <button type="button" data-key="7">7</button>
-      <button type="button" data-key="8">8</button>
-      <button type="button" data-key="9">9</button>
-      <button type="button" data-key="clear">전체지움</button>
-      <button type="button" data-key="0">0</button>
-      <button type="button" data-key="back">← 지움</button>
-    </div>
+    <div class="keypad" data-target="input-account"></div>
     <button data-action="submit-account" class="primary">다음</button>
   </section>
 
   <section class="screen" id="screen-amount">
     <h1>얼마를 보내나요?</h1>
     <input id="input-amount" type="text" inputmode="numeric" placeholder="숫자만 입력">
-    <div class="keypad" data-target="input-amount">
-      <button type="button" data-key="1">1</button>
-      <button type="button" data-key="2">2</button>
-      <button type="button" data-key="3">3</button>
-      <button type="button" data-key="4">4</button>
-      <button type="button" data-key="5">5</button>
-      <button type="button" data-key="6">6</button>
-      <button type="button" data-key="7">7</button>
-      <button type="button" data-key="8">8</button>
-      <button type="button" data-key="9">9</button>
-      <button type="button" data-key="clear">전체지움</button>
-      <button type="button" data-key="0">0</button>
-      <button type="button" data-key="back">← 지움</button>
-    </div>
+    <div class="keypad" data-target="input-amount"></div>
     <button data-action="submit-amount" class="primary">다음</button>
   </section>
 
@@ -394,6 +368,22 @@ window.BankUI = (function () {
   return { showStep: showStep, showAnswer: showAnswer, showError: showError };
 })();
 
+// 계좌·금액 입력칸 키패드는 버튼 구성(1~9, 전체지움, 0, 지움)이 같으므로
+// 마크업을 두 번 적지 않고 한 번만 만들어 두 군데에 채운다.
+(function buildKeypads() {
+  var KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'clear', '0', 'back'];
+  var LABEL = { clear: '전체지움', back: '← 지움' };
+  document.querySelectorAll('.keypad').forEach(function (pad) {
+    KEYS.forEach(function (k) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('data-key', k);
+      b.textContent = LABEL[k] || k;
+      pad.appendChild(b);
+    });
+  });
+})();
+
 // data-action 을 가진 것만 상태머신에 넘긴다.
 // 도움바·질문칸·퀴즈 버튼은 data-action 이 없으므로 여기 안 걸린다.
 document.addEventListener('click', function (e) {
@@ -435,12 +425,15 @@ document.addEventListener('click', function (e) {
 
 // 용어 사전 맨 아래 → O·X 퀴즈. 퀴즈 화면 안쪽은 mission/quiz.js 소유라 Quiz.start() 를 부르기만 한다.
 document.getElementById('glossary-to-quiz').addEventListener('click', function () {
-  if (window.Quiz && typeof window.Quiz.start === 'function') {
+  // isLoaded() 도 같이 봐야 한다 — window.Quiz 는 quiz.js 가 실행되기만 하면 항상 존재하지만,
+  // quiz-data.json fetch 가 아직 안 끝났으면 start() 가 아무것도 그리지 않아 #screen-quiz 가
+  // 빈 화면으로 남는다(도움바도 없어 빠져나올 길이 없다). 그래서 데이터까지 실렸는지 확인한다.
+  if (window.Quiz && typeof window.Quiz.start === 'function' && window.Quiz.isLoaded()) {
     window.BankUI.showStep('quiz');
     window.Quiz.start();
     return;
   }
-  window.BankUI.showAnswer('O·X 퀴즈는 아직 준비 중이에요. 용어 사전을 먼저 읽어 보세요.');
+  window.BankUI.showAnswer('O·X 퀴즈는 아직 준비 중이에요. 잠시 후 다시 눌러 주세요.');
 });
 
 document.addEventListener('click', function (e) {
@@ -472,12 +465,14 @@ document.addEventListener('click', function (e) {
 <script src="../mission/quiz.js"></script>
 <script>
 // missions.json 이 아직 fetch 중이면 로딩 문구가 잠깐 보인다 — 로드되면 다시 그려서 없앤다.
-(function retryIntro() {
+// ponytail: fetch 자체가 재시도되진 않으므로, 한 번 실패하면 다시는 isLoaded() 가 true 가 안 된다.
+// 그래서 재시도 횟수에 상한(5초)을 둔다 — 안 그러면 50ms 마다 영원히 다시 그리며 배터리를 갉아먹는다.
+(function retryIntro(tries) {
   window.BankUI.showStep('intro');
-  if (window.MissionEngine && !window.MissionEngine.isLoaded()) {
-    setTimeout(retryIntro, 50);
+  if (window.MissionEngine && !window.MissionEngine.isLoaded() && tries < 100) {
+    setTimeout(function () { retryIntro(tries + 1); }, 50);
   }
-})();
+})(0);
 </script>
 </body>
 </html>
