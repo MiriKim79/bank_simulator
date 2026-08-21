@@ -229,6 +229,7 @@
     </div>
   </div>
 
+  <p id="my-question" class="hint" hidden></p>
   <p id="ai-answer"></p>
 </main>
 </div>
@@ -284,9 +285,11 @@ window.BankUI = (function () {
     var bar = document.getElementById('help-bar');
     var box = document.getElementById('question-box');
     var answer = document.getElementById('ai-answer');
+    var myQuestion = document.getElementById('my-question');
     if (bar) bar.hidden = off;
     if (off && box) box.hidden = true;          // 열려 있던 질문칸도 같이 닫는다
     if (off && answer) answer.textContent = '';
+    if (off && myQuestion) { myQuestion.textContent = ''; myQuestion.hidden = true; }
   }
 
   function showStep(name) {
@@ -417,9 +420,12 @@ document.addEventListener('click', function (e) {
 });
 
 // data-goto — 미션 판정과 무관한 순수 화면 전환(intro → home). MissionEngine 을 부르지 않는다.
+// 단, #exit-to-home("← 처음으로")은 진행 중이던 미션을 버리고 나가는 링크이므로 상태도 같이 초기화한다 —
+// 안 그러면 홈에서 "이체"를 다시 눌렀을 때 내부 단계가 이전 화면(예: account)에 남아 있어 화면이 되돌아간다.
 document.addEventListener('click', function (e) {
   var el = e.target.closest('[data-goto]');
   if (!el) return;
+  if (el.id === 'exit-to-home' && window.MissionEngine) window.MissionEngine.reset();
   window.BankUI.showStep(el.getAttribute('data-goto'));
 });
 
@@ -458,7 +464,6 @@ document.addEventListener('click', function (e) {
 });
 </script>
 
-<script src="../shared/llm-config.js"></script>
 <script src="../mission/mission-engine.js"></script>
 <script src="../guide/voice.js"></script>
 <script src="../guide/ai-guide.js"></script>

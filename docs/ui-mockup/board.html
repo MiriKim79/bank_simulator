@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>금융한걸음 — 최종 UI 설계 보드</title>
+<style>
+  :root {
+    --bg-page: #F5F7FB;
+    --surface: #FFFFFF;
+    --primary: #2563EB;
+    --text-main: #111827;
+    --text-sub: #4B5563;
+    --border: #D9E2F0;
+    --info-bg: #EFF6FF;
+    --info-fg: #1D4ED8;
+    --error-bg: #FEF2F2;
+    --error-fg: #B91C1C;
+    --success-bg: #ECFDF5;
+    --success-fg: #047857;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px;
+    background: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Pretendard', system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+  }
+  h1.board-title { font-size: 28px; margin: 0 0 4px; }
+  p.board-sub { font-size: 16px; color: var(--text-sub); margin: 0 0 28px; }
+
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .frame-slot { display: flex; align-items: center; }
+  .arrow {
+    font-size: 22px;
+    color: var(--text-sub);
+    margin: 0 10px;
+    align-self: center;
+  }
+  .frame-wrap { display: flex; flex-direction: column; align-items: center; margin: 16px 8px; }
+  .frame-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--info-bg);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .phone {
+    width: 300px;
+    min-height: 560px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(17,24,39,0.06);
+  }
+
+  .progress-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--info-bg);
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .frame-h1 { font-size: 19px; margin: 0 0 12px; font-weight: 700; }
+
+  .mission-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 14px;
+    background: var(--info-bg);
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .mission-eyebrow { font-size: 11px; font-weight: 700; color: var(--primary); }
+  .mission-title { font-size: 14px; color: var(--text-main); }
+  .mission-amount { font-size: 17px; font-weight: 800; color: var(--primary); }
+
+  .account-card {
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .label-sm { margin: 0; font-size: 11px; color: var(--text-sub); font-weight: 700; }
+  .account-no { margin: 4px 0 0; font-size: 13px; }
+  .balance { margin: 6px 0 0; font-size: 15px; }
+  .balance b { font-size: 22px; }
+
+  .mockbtn {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin: 0 0 9px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--text-main);
+  }
+  .mockbtn small { font-weight: 400; font-size: 10px; opacity: 0.75; margin-top: 1px; }
+  .mockbtn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .mockbtn.secondary { background: transparent; color: var(--text-sub); font-weight: 500; min-height: 38px; }
+  .mockbtn.bank-card { align-items: flex-start; padding-left: 14px; }
+
+  .hint { font-size: 13px; color: var(--text-sub); margin: 0 0 14px; }
+
+  .mock-input {
+    min-height: 44px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    color: var(--text-sub);
+    margin-bottom: 4px;
+    background: var(--surface);
+  }
+  .mock-input.filled { color: var(--text-main); font-weight: 700; font-size: 20px; }
+  .placeholder-note { font-size: 11px; color: var(--text-sub); opacity: 0.8; margin: 0 0 12px; }
+
+  .keypad-mini {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin: 10px 0 14px;
+  }
+  .keypad-mini div {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 13px;
+    background: var(--surface);
+  }
+
+  .confirm-card {
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .confirm-section { margin-bottom: 12px; }
+  .confirm-section:last-child { margin-bottom: 0; }
+  .confirm-section-title { font-size: 11px; font-weight: 700; color: var(--text-sub); margin: 0 0 3px; }
+  .confirm-section-value { font-size: 14px; }
+  .confirm-amount-row { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 10px; }
+  .confirm-amount-value { font-size: 24px; font-weight: 800; color: var(--primary); }
+
+  .safety-note { font-size: 11px; color: var(--text-sub); text-align: center; margin: 6px 0 0; }
+
+  .done-icon { font-size: 40px; text-align: center; margin: 0 0 8px; }
+
+  .ai-help-block { margin-top: 18px; padding-top: 14px; border-top: 2px solid var(--border); }
+  .ai-trigger {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 42px; border-radius: 10px; border: 2px solid var(--primary);
+    color: var(--primary); font-size: 13px; font-weight: 700;
+  }
+
+  .ai-panel-card {
+    margin-top: 12px;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .ai-panel-title { font-size: 12px; font-weight: 700; color: var(--text-sub); margin: 0 0 8px; }
+  .ai-panel-step { font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+  .ai-quick-btn {
+    min-height: 36px; border: 2px solid var(--border); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--text-sub); margin-bottom: 8px;
+  }
+  .ai-mock-input { min-height: 36px; border: 2px solid var(--border); border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; padding: 0 10px; font-size: 12px; color: var(--text-sub); }
+  .ai-mic { min-height: 34px; border: 2px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-sub); }
+
+  .info-card, .error-card, .success-card {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .info-card { background: var(--info-bg); color: var(--info-fg); }
+  .error-card { background: var(--error-bg); color: var(--error-fg); }
+  .success-card { background: var(--success-bg); color: var(--success-fg); }
+
+  .shake-hint {
+    position: absolute;
+    font-size: 11px;
+    color: var(--error-fg);
+    background: var(--error-bg);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-weight: 700;
+  }
+
+  .top-header-mock {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 300px; margin: 0 auto 8px; font-size: 11px; color: var(--text-sub);
+  }
+  .top-header-mock .brand-name { font-weight: 700; color: var(--text-main); font-size: 13px; }
+  .safety-badge-mock {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+    padding: 3px 8px; white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="board-title">금융한걸음 — 최종 UI 설계 보드</h1>
+<p class="board-sub">A(화면) 담당 공유용 · 라이트 테마 기준 · 실제 DOM ID·data-action 계약은 screen/bank-ui.html 그대로 유지, 이 보드는 시각 설계 참고용</p>
+
+<div class="flow">
+
+  <!-- 1. 시작 화면 -->
+  <div class="frame-wrap">
+    <div class="frame-label">0 · 시작 전 미션 안내 (신규 제안)</div>
+    <div class="top-header-mock">
+      <span class="brand-name">금융한걸음</span>
+      <span class="safety-badge-mock">교육용 연습 · 실제 돈 안 움직임</span>
+    </div>
+    <div class="phone">
+      <div class="mission-banner" style="margin-top:40px;">
+        <span class="mission-eyebrow">오늘의 미션</span>
+        <span class="mission-title">김민수에게 <b class="mission-amount">50,000원</b> 보내기</span>
+      </div>
+      <p class="hint" style="text-align:center;margin:24px 0;">이 화면에서만 미션 내용을 보여줍니다.<br>시작하면 화면에서 사라집니다.</p>
+      <div class="mockbtn primary" style="margin-top:auto;">송금 연습 시작</div>
+    </div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <!-- 2. 은행 홈 -->
+  <div class="frame-wrap">
+    <div class="frame-label">은행 홈</div>
+    <div class="phone">
+      <p class="frame-h1">내 계좌</p>
+      <div class="account-card">
+        <p class="label-sm">출금계좌</p>
+        <p class="account-no">한걸음은행 123456-78-901234</p>
+        <p class="balance">잔액 <b>1,250,000</b>원</p>
+      </div>
+      <div class="mockbtn primary">이체<small>돈 보내기</small></div>
+      <div class="mockbtn secondary">거래내역<small>들어오고 나간 기록</small></div>
+      <div class="mockbtn secondary">잔액조회<small>남은 돈 보기</small></div>
+      <div class="ai-help-block">
+        <div class="ai-trigger">💬 AI 선생님에게 물어보기</div>
+      </div>
+      <p class="placeholder-note" style="margin-top:8px;">시작 후에는 이름·금액·계좌번호를 화면에 다시 보여주지 않습니다.</p>
+    </div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <!-- 3. 은행 선택 -->
+  <div class="frame-wrap">
+    <div class="frame-label">1 / 5 · 은행 선택</div>
+    <div class="phone" style="position:relative;">
+      <span class="progress-pill">1 / 5 — 은행 선택</span>
+      <p class="frame-h1">받는 은행을 선택해주세요</p>
+      <p class="hint">받는 사람: 김민수</p>
+      <div class="mockbtn bank-card">한걸음은행</div>
+      <div class="mockbtn bank-card" style="border-color:var(--error-fg);">새봄은행
+        <span class="shake-hint" style="position:static;display:inline-block;margin-top:4px;">탭하면 살짝 흔들림</span>
+      </div>
+      <div class="mockbtn bank-card">푸른은행</div>
+      <div class="error-card">
+        <b>여기는 정답이 아니에요.</b><br>
+        김민수님의 은행은 '한걸음은행'이에요. 그 버튼을 눌러주세요.
+      </div>
+      <p class="placeholder-note">↑ F8 오답 피드백 예시: 화면 이동 없이 흔들림 + 설명 카드, 다시 선택 가능</p>
+    </div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <!-- 4. 계좌번호 -->
+  <div class="frame-wrap">
+    <div class="frame-label">2 / 5 · 계좌번호 입력</div>
+    <div class="phone">
+      <span class="progress-pill">2 / 5 — 계좌번호 입력</span>
+      <p class="frame-h1">받는 분의 계좌번호</p>
+      <p class="hint">수취인: 김민수 (한걸음은행)</p>
+      <div class="mock-input">예: 123-456-789012</div>
+      <div class="keypad-mini">
+        <div>1</div><div>2</div><div>3</div>
+        <div>4</div><div>5</div><div>6</div>
+        <div>7</div><div>8</div><div>9</div>
+        <div style="font-size:10px;">전체지움</div><div>0</div><div style="font-size:10px;">← 지움</div>
+      </div>
+      <div class="mockbtn primary">다음</div>
+    </div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <!-- 5. 금액 -->
+  <div class="frame-wrap">
+    <div class="frame-label">3 / 5 · 금액 입력</div>
+    <div class="phone">
+      <span class="progress-pill">3 / 5 — 금액 입력</span>
+      <p class="frame-h1">보낼 금액</p>
+      <p class="hint">받는 사람: 김민수</p>
+      <div class="mock-input filled">50,000</div>
+      <div class="keypad-mini">
+        <div>1</div><div>2</div><div>3</div>
+        <div>4</div><div>5</div><div>6</div>
+        <div>7</div><div>8</div><div>9</div>
+        <div style="font-size:10px;">전체지움</div><div>0</div><div style="font-size:10px;">← 지움</div>
+      </div>
+      <div class="mockbtn primary">다음</div>
+      <p class="placeholder-note">빠른 금액 버튼(+50,000 등) 없음 — 학습자가 직접 입력</p>
+    </div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <!-- 6. 확인 -->
+  <div class="frame-wrap">
+    <div class="frame-label">4 / 5 · 확인</div>
+    <div class="phone">
+      <span class="progress-pill">4 / 5 — 확인</span>
+      <p class="frame-h1">보내기 전에 확인해주세요</p>
+      <div class="confirm-card">
+        <div class="confirm-section">
+          <p class="confirm-section-title">내 출금계좌</p>
+          <p class="confirm-section-value">생활비 통장 · 한걸음은행 123456-78-901234</p>
+        </div>
+        <div class="confirm-section">
+          <p class="confirm-section-title">받는 계좌</p>
+          <p class="confirm-section-value">김민수 · 한걸음은행 110-2223-3344</p>
+        </div>
+        <div class="confirm-section confirm-amount-row">
+          <p class="confirm-section-title">보낼 금액</p>
+          <p class="confirm-amount-value">50,000원</p>
+        </div>
+      </div>
+      <div class="mockbtn primary">보내기</div>
+      <p class="safety-note">연습 화면이므로 실제 돈은 보내지지 않습니다.</p>
+    </div>
+  </div>
+
+  <div class="arrow">→</div>
+
+  <!-- 7. 완료 -->
+  <div class="frame-wrap">
+    <div class="frame-label">5 / 5 · 완료</div>
+    <div class="phone">
+      <div class="done-icon">✅</div>
+      <p class="frame-h1" style="text-align:center;">송금 연습을 완료했어요</p>
+      <p class="hint" style="text-align:center;">김민수에게 <b style="color:var(--text-main);">50,000원</b>을<br>보내는 연습을 완료했습니다.</p>
+      <p class="hint safety-note" style="text-align:center;font-size:12px;">실제 돈은 움직이지 않았습니다.</p>
+      <div class="mockbtn primary" style="margin-top:16px;">다시 연습하기</div>
+      <div class="mockbtn secondary" style="border:2px solid var(--border);color:var(--text-main);font-weight:700;">용어 복습하기</div>
+    </div>
+  </div>
+
+</div>
+
+<h1 class="board-title" style="margin-top:40px;">AI 도움 패널 — 열린 상태 예시</h1>
+<p class="board-sub">계좌번호 입력 단계에서 "💬 AI 선생님에게 물어보기"를 눌렀을 때</p>
+
+<div class="flow">
+  <div class="frame-wrap">
+    <div class="frame-label">AI 패널 열림 (account 단계)</div>
+    <div class="phone">
+      <span class="progress-pill">2 / 5 — 계좌번호 입력</span>
+      <p class="frame-h1">받는 분의 계좌번호</p>
+      <p class="hint">수취인: 김민수 (한걸음은행)</p>
+      <div class="mock-input">예: 123-456-789012</div>
+
+      <div class="ai-help-block">
+        <div class="ai-trigger" style="border-style:dashed;">💬 AI 선생님에게 물어보기 (열림)</div>
+        <div class="ai-panel-card">
+          <p class="ai-panel-title">AI 금융선생님</p>
+          <p class="ai-panel-step">2 / 5 · 계좌번호 입력</p>
+          <div class="ai-quick-btn">이 단계 다시 설명해주세요</div>
+          <div class="ai-mock-input">궁금한 내용을 적어보세요</div>
+          <div class="ai-quick-btn" style="color:var(--primary);border-color:var(--primary);font-weight:700;">보내기</div>
+          <div class="ai-mic">🎙 음성으로 질문하기 (Should)</div>
+          <div class="info-card">
+            받는 분은 김민수님이고 계좌번호는 110-2223-3344예요.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="frame-wrap">
+    <div class="frame-label">색상 참고 — 상태별 답변 카드</div>
+    <div class="phone" style="min-height:auto;">
+      <p class="hint" style="margin-bottom:12px;">동일한 AI 답변 영역, 상태에 따라 색만 바뀐다</p>
+      <p class="ai-panel-title">정보 / 일반 답변</p>
+      <div class="info-card">김민수님에게 50,000원을 보내면 돼요.</div>
+      <p class="ai-panel-title" style="margin-top:14px;">오답 피드백</p>
+      <div class="error-card">여기는 거래내역을 확인하는 메뉴예요. 돈을 보내려면 '이체'를 눌러주세요.</div>
+      <p class="ai-panel-title" style="margin-top:14px;">완료 · 성공(참고용, 현재 미사용)</p>
+      <div class="success-card">송금 연습을 완료했어요!</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
